@@ -22,6 +22,11 @@ const LIFESTYLE = [
   { img: "/images/lifestyle-beach.png", label: "COASTLINE", sub: "Squad approved" },
 ];
 
+/* ─── EDGE FADE MASKS ─── */
+/* These CSS mask values dissolve image edges into the background */
+const MASK_VIGNETTE = "radial-gradient(ellipse 70% 65% at 50% 50%, black 40%, transparent 100%)";
+const MASK_ALL_EDGES = "linear-gradient(to bottom, transparent, black 12%, black 85%, transparent), linear-gradient(to right, transparent, black 8%, black 92%, transparent)";
+
 /* ─────────────── HOOKS ─────────────── */
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -163,31 +168,36 @@ function HeroSection({ loaded }: { loaded: boolean }) {
       position: "relative", height: "100vh", overflow: "hidden",
       display: "flex", alignItems: "center", justifyContent: "center"
     }}>
-      <video ref={videoRef} muted loop playsInline style={{
-        position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.3,
-        transform: `translate(${mouse.x}px, ${mouse.y}px) scale(1.05)`
-      }}>
-        <source src="/videos/pronto-hero.mp4" type="video/mp4" />
-      </video>
-
+      {/* Background video — masked on all edges to dissolve into void */}
       <div style={{
-        position: "absolute", inset: 0, opacity: 0.06,
+        position: "absolute", inset: "-5%", width: "110%", height: "110%",
+        WebkitMaskImage: MASK_VIGNETTE,
+        maskImage: MASK_VIGNETTE,
+      }}>
+        <video ref={videoRef} muted loop playsInline style={{
+          width: "100%", height: "100%", objectFit: "cover", opacity: 0.35,
+          transform: `translate(${mouse.x}px, ${mouse.y}px) scale(1.05)`
+        }}>
+          <source src="/videos/pronto-hero.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Grain overlay */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.05, pointerEvents: "none",
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         backgroundSize: "128px"
       }} />
 
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse at center, transparent 30%, #0A0B0E 80%)"
-      }} />
-
+      {/* Red glow behind text */}
       <div style={{
         position: "absolute", width: 500, height: 500,
-        background: "radial-gradient(circle, rgba(200,36,36,0.25) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(200,36,36,0.2) 0%, transparent 70%)",
         top: "50%", left: "50%", transform: "translate(-50%, -50%)",
         filter: "blur(60px)", animation: "pulse 4s ease-in-out infinite"
       }} />
 
+      {/* Content */}
       <div style={{
         position: "relative", zIndex: 10, textAlign: "center",
         opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(40px)",
@@ -238,6 +248,7 @@ function HeroSection({ loaded }: { loaded: boolean }) {
         </div>
       </div>
 
+      {/* Scroll indicator */}
       <div style={{
         position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
         display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
@@ -325,7 +336,7 @@ function ThesisSection() {
   );
 }
 
-/* --- SCREEN 3: FLAVOR WALL (Kinetic Burst Signature Interaction) --- */
+/* --- SCREEN 3: FLAVOR WALL (Kinetic Burst) --- */
 function FlavorWall() {
   const { ref, visible } = useInView(0.1);
   const [active, setActive] = useState(0);
@@ -344,10 +355,11 @@ function FlavorWall() {
       minHeight: "100vh", position: "relative", overflow: "hidden",
       padding: "clamp(60px, 8vw, 120px) 0"
     }}>
+      {/* Ambient color wash */}
       <div style={{
         position: "absolute", inset: 0,
-        background: `radial-gradient(ellipse at 50% 50%, ${flavor.color}15 0%, transparent 60%)`,
-        transition: "background 0.6s"
+        background: `radial-gradient(ellipse at 50% 50%, ${flavor.color}12 0%, transparent 55%)`,
+        transition: "background 0.8s"
       }} />
 
       <div style={{
@@ -368,38 +380,45 @@ function FlavorWall() {
         gap: "clamp(24px, 5vw, 80px)", maxWidth: 1200, margin: "0 auto",
         padding: "0 24px", position: "relative", zIndex: 5, flexWrap: "wrap"
       }}>
+        {/* Active can — uses mix-blend-mode: lighten to melt dark bg into site */}
         <div style={{
-          position: "relative", width: "clamp(280px, 30vw, 400px)", aspectRatio: "3/4",
+          position: "relative", width: "clamp(280px, 30vw, 420px)", aspectRatio: "3/4",
           display: "flex", alignItems: "center", justifyContent: "center"
         }}>
+          {/* Burst rings */}
           {[1, 2, 3].map(r => (
             <div key={r} style={{
               position: "absolute", width: `${150 + r * 60}px`, height: `${150 + r * 60}px`,
               border: `1px solid ${flavor.color}`,
               borderRadius: "50%", top: "50%", left: "50%",
               transform: `translate(-50%, -50%) scale(${burst ? 1.5 : 1})`,
-              opacity: burst ? 0 : 0.15,
+              opacity: burst ? 0 : 0.12,
               transition: `all ${0.4 + r * 0.1}s cubic-bezier(0.16,1,0.3,1)`
             }} />
           ))}
 
+          {/* Color glow */}
           <div style={{
-            position: "absolute", width: 300, height: 300,
-            background: `radial-gradient(circle, ${flavor.color}40 0%, transparent 70%)`,
+            position: "absolute", width: 280, height: 280,
+            background: `radial-gradient(circle, ${flavor.color}35 0%, transparent 70%)`,
             top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-            filter: "blur(40px)", transition: "background 0.6s"
+            filter: "blur(50px)", transition: "background 0.8s"
           }} />
 
+          {/* Can image — LIGHTEN blend mode dissolves dark bg into void */}
           <div style={{
-            position: "relative", width: "80%", height: "80%",
+            position: "relative", width: "85%", height: "85%",
             transform: burst ? "scale(0.85) rotate(-5deg)" : "scale(1) rotate(0deg)",
             transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1)",
-            filter: `drop-shadow(0 20px 40px ${flavor.color}60)`
+            mixBlendMode: "lighten" as React.CSSProperties["mixBlendMode"],
+            WebkitMaskImage: "radial-gradient(ellipse 85% 80% at 50% 50%, black 50%, transparent 100%)",
+            maskImage: "radial-gradient(ellipse 85% 80% at 50% 50%, black 50%, transparent 100%)",
           }}>
-            <Image src={flavor.img} alt={flavor.name} fill style={{ objectFit: "contain" }} sizes="400px" />
+            <Image src={flavor.img} alt={flavor.name} fill style={{ objectFit: "contain" }} sizes="420px" />
           </div>
         </div>
 
+        {/* Info panel */}
         <div style={{ maxWidth: 400 }}>
           <div style={{
             fontFamily: "'DM Mono'", fontSize: 11, letterSpacing: "0.3em",
@@ -423,6 +442,7 @@ function FlavorWall() {
             {flavor.tagline}
           </p>
 
+          {/* Flavor dots */}
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
             {FLAVORS.map((f, i) => (
               <button key={i} onClick={() => switchFlavor(i)} style={{
@@ -443,16 +463,16 @@ function FlavorWall() {
   );
 }
 
-/* --- SCREEN 4: VIDEO SHOWCASE --- */
+/* --- SCREEN 4: VIDEO SHOWCASE — edge-dissolved, no borders --- */
 function VideoShowcase() {
   const { ref, visible } = useInView(0.1);
   return (
     <section ref={ref} style={{
-      padding: "clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)",
+      padding: "clamp(60px, 8vw, 120px) 0",
       position: "relative"
     }}>
       <div style={{
-        textAlign: "center", marginBottom: 48,
+        textAlign: "center", marginBottom: 48, padding: "0 24px",
         opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)",
         transition: "all 0.8s cubic-bezier(0.16,1,0.3,1)"
       }}>
@@ -466,29 +486,35 @@ function VideoShowcase() {
 
       <div style={{
         display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 500px), 1fr))",
-        gap: 24, maxWidth: 1200, margin: "0 auto"
+        gap: 0, maxWidth: "100%", margin: "0 auto"
       }}>
         {[
           { src: "/videos/pronto-hero.mp4", label: "BRAND ANIMATION" },
           { src: "/videos/strawburst.mp4", label: "STRAWBURST LAUNCH" },
         ].map((v, i) => (
           <div key={i} style={{
-            position: "relative", borderRadius: 2, overflow: "hidden",
-            aspectRatio: "16/9", background: "#0D0F12",
-            border: "1px solid rgba(200,36,36,0.1)",
+            position: "relative", overflow: "hidden",
+            aspectRatio: "16/9",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(30px)",
-            transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.15}s`
+            transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.15}s`,
+            /* Dissolve all edges into void */
+            WebkitMaskImage: MASK_ALL_EDGES,
+            maskImage: MASK_ALL_EDGES,
+            WebkitMaskComposite: "intersect" as unknown as string,
+            maskComposite: "intersect",
           }}>
             <video muted loop playsInline autoPlay style={{
               width: "100%", height: "100%", objectFit: "cover"
             }}>
               <source src={v.src} type="video/mp4" />
             </video>
+            {/* Bottom label gradient — sits inside the mask */}
             <div style={{
               position: "absolute", bottom: 0, left: 0, right: 0,
-              background: "linear-gradient(transparent, rgba(10,11,14,0.9))",
-              padding: "40px 24px 20px"
+              background: "linear-gradient(transparent, rgba(10,11,14,0.8))",
+              padding: "60px 40px 32px",
+              display: "flex", alignItems: "flex-end", justifyContent: "center"
             }}>
               <span style={{ fontFamily: "'DM Mono'", fontSize: 11, letterSpacing: "0.2em", color: "#E5C14A" }}>
                 {v.label}
@@ -501,12 +527,12 @@ function VideoShowcase() {
   );
 }
 
-/* --- SCREEN 5: LIFESTYLE GRID --- */
+/* --- SCREEN 5: LIFESTYLE GRID — vignette-masked, edges dissolve --- */
 function LifestyleGrid() {
   const { ref, visible } = useInView(0.05);
   return (
     <section id="lifestyle" ref={ref} style={{
-      padding: "clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)",
+      padding: "clamp(60px, 8vw, 120px) clamp(16px, 4vw, 60px)",
       position: "relative"
     }}>
       <div style={{
@@ -525,35 +551,42 @@ function LifestyleGrid() {
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
-        gap: 16, maxWidth: 1400, margin: "0 auto"
+        gap: 4, maxWidth: 1400, margin: "0 auto"
       }}>
         {LIFESTYLE.map((item, i) => (
           <div key={i} style={{
-            position: "relative", overflow: "hidden", aspectRatio: i === 0 ? "4/5" : i < 3 ? "3/4" : "1/1",
+            position: "relative", overflow: "hidden",
+            aspectRatio: i === 0 ? "4/5" : i < 3 ? "3/4" : "1/1",
             cursor: "pointer", gridRow: i === 0 ? "span 2" : undefined,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(40px)",
-            transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.08}s`
+            transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.08}s`,
+            /* Vignette mask — dissolves all edges into void */
+            WebkitMaskImage: "radial-gradient(ellipse 75% 70% at 50% 45%, black 45%, transparent 100%)",
+            maskImage: "radial-gradient(ellipse 75% 70% at 50% 45%, black 45%, transparent 100%)",
           }}
           onMouseEnter={e => {
             const img = e.currentTarget.querySelector("img") as HTMLElement;
             if (img) img.style.transform = "scale(1.08)";
-            const overlay = e.currentTarget.querySelector(".ls-overlay") as HTMLElement;
-            if (overlay) overlay.style.opacity = "1";
+            const s = e.currentTarget.style as unknown as Record<string, string>;
+            s.webkitMaskImage = "radial-gradient(ellipse 85% 80% at 50% 45%, black 55%, transparent 100%)";
+            s.maskImage = "radial-gradient(ellipse 85% 80% at 50% 45%, black 55%, transparent 100%)";
           }}
           onMouseLeave={e => {
             const img = e.currentTarget.querySelector("img") as HTMLElement;
             if (img) img.style.transform = "scale(1)";
-            const overlay = e.currentTarget.querySelector(".ls-overlay") as HTMLElement;
-            if (overlay) overlay.style.opacity = "0.7";
+            const s = e.currentTarget.style as unknown as Record<string, string>;
+            s.webkitMaskImage = "radial-gradient(ellipse 75% 70% at 50% 45%, black 45%, transparent 100%)";
+            s.maskImage = "radial-gradient(ellipse 75% 70% at 50% 45%, black 45%, transparent 100%)";
           }}
           >
             <Image src={item.img} alt={item.label} fill style={{ objectFit: "cover", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)" }} sizes="400px" />
-            <div className="ls-overlay" style={{
+            {/* Bottom gradient for text readability */}
+            <div style={{
               position: "absolute", inset: 0,
-              background: "linear-gradient(transparent 40%, rgba(10,11,14,0.85))",
+              background: "linear-gradient(transparent 50%, rgba(10,11,14,0.7))",
               display: "flex", flexDirection: "column", justifyContent: "flex-end",
-              padding: 24, transition: "opacity 0.4s", opacity: 0.7
+              padding: 24
             }}>
               <div style={{ fontFamily: "'Bebas Neue'", fontSize: 28, color: "#F3F5F7", letterSpacing: "0.06em" }}>
                 {item.label}
@@ -644,7 +677,7 @@ function FuelSection() {
   );
 }
 
-/* --- SCREEN 7: FULL LINEUP HERO --- */
+/* --- SCREEN 7: FULL LINEUP — lighten blend, no bg visible --- */
 function LineupHero() {
   const { ref, visible } = useInView(0.1);
   return (
@@ -670,12 +703,12 @@ function LineupHero() {
       </div>
 
       <div style={{
-        display: "flex", justifyContent: "center", gap: "clamp(16px, 3vw, 40px)",
+        display: "flex", justifyContent: "center", gap: "clamp(8px, 2vw, 32px)",
         marginTop: 60, flexWrap: "wrap", maxWidth: 1200, margin: "60px auto 0"
       }}>
         {FLAVORS.map((f, i) => (
           <div key={i} style={{
-            position: "relative", width: "clamp(140px, 15vw, 200px)", textAlign: "center",
+            position: "relative", width: "clamp(140px, 16vw, 220px)", textAlign: "center",
             cursor: "pointer",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(40px)",
@@ -690,20 +723,25 @@ function LineupHero() {
             if (img) img.style.transform = "translateY(0) scale(1)";
           }}
           >
+            {/* Subtle glow under each can */}
             <div style={{
-              position: "absolute", bottom: "30%", left: "50%", width: 100, height: 100,
-              background: `radial-gradient(circle, ${f.color}30 0%, transparent 70%)`,
-              transform: "translate(-50%, 0)", filter: "blur(20px)"
+              position: "absolute", bottom: "25%", left: "50%", width: 120, height: 120,
+              background: `radial-gradient(circle, ${f.color}25 0%, transparent 70%)`,
+              transform: "translate(-50%, 0)", filter: "blur(25px)"
             }} />
+            {/* Can — lighten blend dissolves dark bg into site void */}
             <div className="lineup-can" style={{
               position: "relative", width: "100%", aspectRatio: "3/5",
-              transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1)"
+              transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1)",
+              mixBlendMode: "lighten" as React.CSSProperties["mixBlendMode"],
+              WebkitMaskImage: "radial-gradient(ellipse 80% 85% at 50% 48%, black 50%, transparent 95%)",
+              maskImage: "radial-gradient(ellipse 80% 85% at 50% 48%, black 50%, transparent 95%)",
             }}>
-              <Image src={f.img} alt={f.name} fill style={{ objectFit: "contain" }} sizes="200px" />
+              <Image src={f.img} alt={f.name} fill style={{ objectFit: "contain" }} sizes="220px" />
             </div>
             <div style={{
               fontFamily: "'DM Mono'", fontSize: 10, letterSpacing: "0.15em",
-              color: "#B7BCC5", marginTop: 16
+              color: "#B7BCC5", marginTop: 12
             }}>
               {f.name}
             </div>
