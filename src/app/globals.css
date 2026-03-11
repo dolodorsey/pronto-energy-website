@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@300;400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void: #0A0B0E;
+  --base: #0D0F12;
+  --red: #C82424;
+  --gold: #E5C14A;
+  --silver: #B7BCC5;
+  --white: #F3F5F7;
+  --steel: #1A1D22;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { overflow-x: hidden; background: var(--void); color: var(--white); }
+::selection { background: rgba(200, 36, 36, 0.4); color: var(--white); }
