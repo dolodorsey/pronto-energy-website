@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 const C={base:"#080808",surface:"#0f0f0f",border:"rgba(255,255,255,0.07)",red:"#d42020",redDeep:"#8a0e0e",redGlow:"rgba(212,32,32,0.14)",green:"#22c55e",greenGlow:"rgba(34,197,94,0.10)",cream:"#f0ece4",muted:"rgba(255,255,255,0.48)",dim:"rgba(255,255,255,0.22)"};
 const F={serif:"'Cormorant Garamond','Playfair Display',Georgia,serif",sans:"'DM Sans','Inter',system-ui,sans-serif"};
-function useInView(t=0.1){const ref=useRef(null);const[v,setV]=useState(false);useEffect(()=>{const el=ref.current;if(!el)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting)setV(true)},{threshold:t});o.observe(el);return()=>o.disconnect();},[]);return[ref,v];}
+function useInView(t=0.1){const ref=useRef<HTMLDivElement>(null);const[v,setV]=useState(false);useEffect(()=>{const el=ref.current;if(!el)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting)setV(true)},{threshold:t});o.observe(el);return()=>o.disconnect();},[]);return[ref,v];}
 function Reveal({children, d = 0}: {children: ReactNode; d?: number}){const[ref,v]=useInView();return<div ref={ref} style={{transform:v?"translateY(0)":"translateY(32px)",opacity:v?1:0,transition:`all 0.9s cubic-bezier(0.16,1,0.3,1) ${d}s`}}>{children}</div>;}
 const Grain=()=>(<div style={{position:"absolute",inset:0,opacity:0.04,pointerEvents:"none",backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`}}/>);
 
@@ -31,7 +31,7 @@ return(<div style={{background:C.base}}>
 <div style={{opacity:loaded?1:0,transition:"opacity 1s ease 1.0s"}}>
 <div style={{padding:"48px 40px",background:"rgba(255,255,255,0.03)",border:`1px solid ${C.border}`,position:"relative",overflow:"hidden"}}>
 <div style={{position:"absolute",top:0,left:0,right:0,height:"2px",background:`linear-gradient(90deg,${C.red},${C.green})`}}/>
-<div style={{fontFamily:F.sans,fontSize:"9px",fontWeight:600,letterSpacing:"0.4em",textTransform:"uppercase",color:C.red,marginBottom:"28px"}}>What's Inside</div>
+<div style={{fontFamily:F.sans,fontSize:"9px",fontWeight:600,letterSpacing:"0.4em",textTransform:"uppercase",color:C.red,marginBottom:"28px"}}>What&apos;s Inside</div>
 {["300mg Natural Caffeine","5g Amino Blend","B-Vitamin Complex","Zero Sugar · Zero Crash","Clean Label Certified"].map(s=>(<div key={s} style={{display:"flex",alignItems:"center",gap:"14px",marginBottom:"16px"}}><div style={{width:"6px",height:"6px",borderRadius:"50%",background:`linear-gradient(135deg,${C.red},${C.green})`,flexShrink:0}}/><span style={{fontFamily:F.sans,fontSize:"14px",fontWeight:500,color:C.cream}}>{s}</span></div>))}
 <div style={{marginTop:"20px",fontFamily:F.sans,fontSize:"11px",color:C.dim}}>NSF Certified · Informed Sport · Made in USA</div>
 </div></div></div></section>
