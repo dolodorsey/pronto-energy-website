@@ -1,6 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
-import { useState, useEffect, useRef, MutableRefObject } from "react";
+import { useState, useEffect, useRef, useCallback, MutableRefObject } from "react";
 
 // ─── TOKENS ───────────────────────────────────────────────────────────────────
 const C = {
@@ -43,12 +43,179 @@ const Grain = ({ o = 0.04 }) => (
   <div style={{ position:"absolute", inset:0, opacity:o, pointerEvents:"none", backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
 );
 
+// ─── VIDEO PORTAL PRELOADER ──────────────────────────────────────────────────
+function VideoPortal({ onComplete }: { onComplete: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [phase, setPhase] = useState<"playing" | "dissolving" | "done">("playing");
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+
+    const handleTimeUpdate = () => {
+      if (vid.duration) {
+        const p = vid.currentTime / vid.duration;
+        setProgress(p);
+        // Start dissolve at 75% of video
+        if (p >= 0.75 && phase === "playing") {
+          setPhase("dissolving");
+        }
+      }
+    };
+
+    const handleEnded = () => {
+      setPhase("done");
+      setTimeout(onComplete, 600);
+    };
+
+    vid.addEventListener("timeupdate", handleTimeUpdate);
+    vid.addEventListener("ended", handleEnded);
+
+    // Auto-play
+    vid.play().catch(() => {
+      // If autoplay blocked, skip to site
+      setPhase("done");
+      setTimeout(onComplete, 300);
+    });
+
+    return () => {
+      vid.removeEventListener("timeupdate", handleTimeUpdate);
+      vid.removeEventListener("ended", handleEnded);
+    };
+  }, [onComplete, phase]);
+
+  // Skip on click
+  const handleSkip = useCallback(() => {
+    setPhase("done");
+    setTimeout(onComplete, 400);
+  }, [onComplete]);
+
+  if (phase === "done") return null;
+
+  return (
+    <div
+      onClick={handleSkip}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        background: "#050505",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: "pointer",
+        opacity: phase === "dissolving" ? 0 : 1,
+        transition: "opacity 1.6s cubic-bezier(0.16,1,0.3,1)",
+      }}
+    >
+      {/* Video */}
+      <video
+        ref={videoRef}
+        src="/videos/portal.mp4"
+        muted
+        playsInline
+        preload="auto"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transform: phase === "dissolving" ? "scale(1.08)" : "scale(1)",
+          transition: "transform 1.8s cubic-bezier(0.16,1,0.3,1)",
+        }}
+      />
+
+      {/* Radial vignette */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "radial-gradient(ellipse at center, transparent 30%, rgba(5,5,5,0.6) 80%, rgba(5,5,5,0.95) 100%)",
+        pointerEvents: "none",
+      }} />
+
+      {/* Brand overlay */}
+      <div style={{
+        position: "relative",
+        zIndex: 2,
+        textAlign: "center",
+        opacity: progress > 0.1 ? 1 : 0,
+        transform: progress > 0.1 ? "translateY(0)" : "translateY(20px)",
+        transition: "all 1.2s cubic-bezier(0.16,1,0.3,1)",
+      }}>
+        <div style={{
+          fontFamily: F.sans,
+          fontSize: "8px",
+          letterSpacing: "0.6em",
+          textTransform: "uppercase",
+          color: C.red,
+          marginBottom: "16px",
+          textShadow: "0 0 30px rgba(212,32,32,0.4)",
+        }}>
+          Premium Energy
+        </div>
+        <div style={{
+          fontFamily: F.sans,
+          fontSize: "clamp(48px,12vw,160px)",
+          fontWeight: 900,
+          lineHeight: 0.85,
+          letterSpacing: "-0.04em",
+          color: C.cream,
+          textShadow: "0 0 60px rgba(0,0,0,0.8)",
+        }}>
+          PRONTO
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div style={{
+        position: "absolute",
+        bottom: "48px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 3,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "16px",
+      }}>
+        <div style={{
+          width: "120px",
+          height: "1px",
+          background: "rgba(255,255,255,0.12)",
+          overflow: "hidden",
+          borderRadius: "1px",
+        }}>
+          <div style={{
+            width: `${progress * 100}%`,
+            height: "100%",
+            background: `linear-gradient(90deg, ${C.red}, ${C.greenBright})`,
+            transition: "width 0.3s ease",
+          }} />
+        </div>
+        <div style={{
+          fontFamily: F.sans,
+          fontSize: "8px",
+          letterSpacing: "0.4em",
+          textTransform: "uppercase",
+          color: "rgba(255,255,255,0.25)",
+        }}>
+          Tap to Enter
+        </div>
+      </div>
+
+      <Grain o={0.05} />
+    </div>
+  );
+}
+
 // ─── NAV ──────────────────────────────────────────────────────────────────────
-function Nav() {
+function Nav({ visible }: { visible: boolean }) {
   const [s, setS] = useState(false);
   useEffect(() => { const h=()=>setS(window.scrollY>60); window.addEventListener("scroll",h,{passive:true}); return ()=>window.removeEventListener("scroll",h); },[]);
   return (
-    <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, padding:s?"14px clamp(24px,4vw,64px)":"26px clamp(24px,4vw,64px)", display:"flex", justifyContent:"space-between", alignItems:"center", background:s?"rgba(8,8,8,0.96)":"transparent", backdropFilter:s?"blur(28px)":"none", borderBottom:s?`1px solid ${C.border}`:"none", transition:"all 0.5s cubic-bezier(0.16,1,0.3,1)" }}>
+    <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, padding:s?"14px clamp(24px,4vw,64px)":"26px clamp(24px,4vw,64px)", display:"flex", justifyContent:"space-between", alignItems:"center", background:s?"rgba(8,8,8,0.96)":"transparent", backdropFilter:s?"blur(28px)":"none", borderBottom:s?`1px solid ${C.border}`:"none", transition:"all 0.5s cubic-bezier(0.16,1,0.3,1)", opacity:visible?1:0, transform:visible?"translateY(0)":"translateY(-20px)" }}>
       <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
         {/* Logo mark */}
         <div style={{ width:"8px", height:"28px", background:`linear-gradient(180deg, ${C.red}, ${C.green})`, borderRadius:"4px" }}/>
@@ -59,7 +226,7 @@ function Nav() {
       </div>
       <div style={{ display:"flex", gap:"clamp(14px,2.5vw,36px)", alignItems:"center" }}>
         {["Products","Science","Retail","Partners"].map(n=>(
-          <a key={n} href={`#${n.toLowerCase()}`} style={{ fontFamily:F.sans, fontSize:"10px", fontWeight:500, letterSpacing:"0.22em", textTransform:"uppercase", color:C.muted, textDecoration:"none", transition:"color 0.3s" }} onMouseEnter={e=>e.target.style.color=C.cream} onMouseLeave={e=>e.target.style.color=C.muted}>{n}</a>
+          <a key={n} href={`#${n.toLowerCase()}`} style={{ fontFamily:F.sans, fontSize:"10px", fontWeight:500, letterSpacing:"0.22em", textTransform:"uppercase", color:C.muted, textDecoration:"none", transition:"color 0.3s" }} onMouseEnter={e=>(e.target as HTMLElement).style.color=C.cream} onMouseLeave={e=>(e.target as HTMLElement).style.color=C.muted}>{n}</a>
         ))}
         <button style={{ fontFamily:F.sans, fontSize:"10px", fontWeight:700, letterSpacing:"0.14em", textTransform:"uppercase", color:C.cream, background:`linear-gradient(135deg,${C.red},${C.redDeep})`, border:"none", padding:"10px 28px", cursor:"pointer", transition:"all 0.3s" }} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>Get Pronto</button>
       </div>
@@ -68,9 +235,9 @@ function Nav() {
 }
 
 // ─── HERO ─────────────────────────────────────────────────────────────────────
-function Hero() {
+function Hero({ siteReady }: { siteReady: boolean }) {
   const [loaded, setLoaded] = useState(false);
-  useEffect(()=>{ setTimeout(()=>setLoaded(true),80); },[]);
+  useEffect(()=>{ if(siteReady) setTimeout(()=>setLoaded(true),200); },[siteReady]);
 
   const specs = ["300mg Natural Caffeine","5g Amino Blend","B-Vitamin Complex","Zero Sugar · Zero Crash","Clean Label Certified"];
 
@@ -326,10 +493,14 @@ function Footer() {
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
 export default function ProntoEnergyV3() {
+  const [portalDone, setPortalDone] = useState(false);
+  const handlePortalComplete = useCallback(() => setPortalDone(true), []);
+
   return (
     <div style={{ background:C.base }}>
-      <Nav/>
-      <Hero/>
+      {!portalDone && <VideoPortal onComplete={handlePortalComplete} />}
+      <Nav visible={portalDone} />
+      <Hero siteReady={portalDone} />
       <Products/>
       <TheScience/>
       <RetailWholesale/>
