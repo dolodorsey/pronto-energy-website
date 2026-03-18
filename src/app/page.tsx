@@ -49,9 +49,8 @@ function VideoIntroHero() {
         </video>
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,${C.dark}88 0%,${C.dark}dd 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ textAlign: "center" }}>
-            <div style={{ width: 3, height: phase >= 1 ? 0 : 48, background: `linear-gradient(180deg,${C.volt},${C.glacier})`, margin: "0 auto 20px", transition: "height 0.8s cubic-bezier(0.16,1,0.3,1)", borderRadius: 2 }} />
-            <div style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(48px,10vw,120px)", fontWeight: 400, letterSpacing: "0.12em", color: C.white, lineHeight: 1, opacity: phase >= 1 ? 0 : 1, transition: "opacity 0.5s ease" }}>PRONTO</div>
-            <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: "9px", fontWeight: 500, letterSpacing: "0.55em", textTransform: "uppercase", color: C.volt, marginTop: 12, opacity: phase >= 1 ? 0 : 1, transition: "opacity 0.4s ease" }}>Future Fuel</div>
+            <div style={{ width: 3, height: phase >= 1 ? 0 : 48, background: `linear-gradient(180deg,${C.volt},${C.glacier})`, margin: "0 auto 24px", transition: "height 0.8s cubic-bezier(0.16,1,0.3,1)", borderRadius: 2 }} />
+            <img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: "clamp(40px,8vw,80px)", width: "auto", objectFit: "contain", opacity: phase >= 1 ? 0 : 1, transition: "opacity 0.5s ease" }} />
           </div>
         </div>
       </div>
@@ -355,9 +354,8 @@ function Nav() {
   useEffect(() => { const h = () => setS(window.scrollY > 80); window.addEventListener("scroll", h, { passive: true }); return () => window.removeEventListener("scroll", h) }, []);
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999, padding: s ? "10px clamp(24px,6vw,80px)" : "24px clamp(24px,6vw,80px)", display: "flex", justifyContent: "space-between", alignItems: "center", background: s ? `${C.base}f0` : "transparent", backdropFilter: s ? "blur(32px) saturate(1.3)" : "none", borderBottom: s ? `1px solid ${C.border}` : "none", transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <div style={{ width: 6, height: 26, background: `linear-gradient(180deg,${C.volt},${C.glacier})`, borderRadius: 3 }} />
-        <span style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: 22, fontWeight: 400, color: C.white, letterSpacing: "0.1em" }}>PRONTO</span>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: 28, width: "auto", objectFit: "contain" }} />
       </div>
       <div style={{ display: "flex", gap: "clamp(14px,2.5vw,36px)", alignItems: "center" }}>
         {["Flavors", "Science", "Partners"].map(n => (<a key={n} href={`#${n.toLowerCase()}`} className="nav-link-hide" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 9, fontWeight: 500, letterSpacing: "0.28em", textTransform: "uppercase", color: C.muted, textDecoration: "none", transition: "color 0.3s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{n}</a>))}
@@ -372,7 +370,7 @@ function Footer() {
   return (<footer style={{ background: C.dark, borderTop: `1px solid ${C.border}`, padding: "64px clamp(32px,8vw,120px) 40px" }}>
     <div style={{ maxWidth: 1400, margin: "0 auto" }}>
       <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr repeat(3,1fr)", gap: 48, marginBottom: 56 }}>
-        <div><div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}><div style={{ width: 6, height: 26, background: `linear-gradient(180deg,${C.volt},${C.glacier})`, borderRadius: 3 }} /><span style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: 22, fontWeight: 400, color: C.white, letterSpacing: "0.1em" }}>PRONTO</span></div><p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 300, lineHeight: 1.8, color: C.muted }}>Premium energy for performers.<br />No crash. No compromise.</p></div>
+        <div><div style={{ marginBottom: 16 }}><img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: 32, width: "auto", objectFit: "contain" }} /></div><p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 300, lineHeight: 1.8, color: C.muted }}>Premium energy for performers.<br />No crash. No compromise.</p></div>
         {[{ h: "Flavors", l: ["Blue Vanilla Ice", "Dragonfruit", "Matcha", "Original", "Strawburst", "White Pineapple"] }, { h: "Business", l: ["Wholesale", "Retail", "Hospitality", "Distributor", "Partnerships"] }, { h: "Company", l: ["About", "The Science", "Certifications", "Press", "A KHG Brand"] }].map(col => (<div key={col.h}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 8, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: C.volt, marginBottom: 18 }}>{col.h}</div><ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>{col.l.map(item => <li key={item} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 12, fontWeight: 300, color: C.muted, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{item}</li>)}</ul></div>))}
       </div>
       <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.12)" }}>© 2026 Pronto Energy. A Kollective Hospitality Group Brand.</div><div style={{ display: "flex", gap: 24 }}>{["Privacy", "Terms", "Contact"].map(i => <span key={i} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.12)", cursor: "pointer" }}>{i}</span>)}</div></div>
