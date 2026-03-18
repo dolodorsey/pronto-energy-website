@@ -66,7 +66,7 @@ function VideoIntroHero() {
       </video>
       <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,${C.dark}00 0%,${C.dark}cc 70%,${C.dark} 100%)` }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at ${mouse.x * 100}% ${mouse.y * 100}%,${C.voltGlow},transparent 50%)` }} />
-      <div style={{ position: "absolute", inset: 0, opacity: 0.04, pointerEvents: "none", mixBlendMode: "overlay", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
+      <div style={{ position: "absolute", inset: 0, opacity: 0.12, pointerEvents: "none", mixBlendMode: "overlay", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
 
       <div style={{ position: "relative", zIndex: 2, padding: "160px clamp(32px,8vw,120px) 120px", maxWidth: 1400, margin: "0 auto", width: "100%" }}>
         <div style={{ opacity: phase >= 2 ? 1 : 0, transform: phase >= 2 ? "translateY(0)" : "translateY(60px)", transition: "all 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s" }}>
@@ -129,8 +129,8 @@ function ElementalHeroes() {
   ];
   return (
     <section style={{ background: C.dark, padding: "120px 0 80px", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, opacity: 0.05, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-stadium.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.2) saturate(0.3)" }} />
+      <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
+        <img src="/images/lifestyle-stadium.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, opacity: 0.03, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ padding: "0 clamp(32px,8vw,120px)", maxWidth: 1400, margin: "0 auto 56px", position: "relative", zIndex: 1 }}>
@@ -259,8 +259,8 @@ function TheScience() {
   ];
   return (
     <section id="science" style={{ background: C.dark, padding: "120px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, opacity: 0.05, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-gym.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.2) saturate(0.3)" }} />
+      <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
+        <img src="/images/lifestyle-gym.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, opacity: 0.03, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 70% 50%,${C.voltGlow},transparent 55%)` }} />
@@ -318,8 +318,8 @@ function Retail() {
   ];
   return (
     <section id="partners" style={{ background: `linear-gradient(180deg,${C.surface} 0%,${C.base} 100%)`, padding: "120px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, opacity: 0.05, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-nightclub.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.2) saturate(0.3)" }} />
+      <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
+        <img src="/images/lifestyle-nightclub.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ maxWidth: 1400, margin: "0 auto" }}>
         <Rev><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 9, fontWeight: 700, letterSpacing: "0.6em", textTransform: "uppercase", color: C.volt, marginBottom: 20 }}>Distribution</div>
@@ -341,8 +341,8 @@ function Retail() {
 function ClosingCTA() {
   return (
     <section style={{ background: C.dark, padding: "160px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, opacity: 0.06, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-festival.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.2) saturate(0.3)" }} />
+      <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
+        <img src="/images/lifestyle-festival.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, opacity: 0.03, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 55% 50%,${C.voltGlow},transparent 45%),radial-gradient(ellipse at 35% 50%,${C.glacierGlow},transparent 45%)` }} />
