@@ -125,7 +125,7 @@ function ElementalHeroes() {
     { name: "Matcha", img: "/images/hero-matcha.png", accent: C.volt },
     { name: "Original", img: "/images/hero-original.png", accent: "#FFCC00" },
     { name: "Strawburst", img: "/images/hero-strawburst.png", accent: "#FF4090" },
-    { name: "White Pineapple", img: "/images/hero-whitepineapple.png", accent: "#FFD700" },
+    { name: "White Pineapple", img: "/images/can-white-pineapple-nobg.png", accent: "#FFD700" },
   ];
   return (
     <section style={{ background: C.dark, padding: "120px 0 80px", position: "relative", overflow: "hidden" }}>
@@ -182,7 +182,7 @@ function Products() {
     { name: "Matcha", img: "/images/products/matcha.png", desc: "Zen focus. Clean power.", accent: C.volt, bg: "#101A0A" },
     { name: "Original", img: "/images/products/original.png", desc: "Pure lightning. The flagship.", accent: "#FFCC00", bg: "#1A180A" },
     { name: "Strawburst", img: "/images/products/strawburst.png", desc: "Sweet explosion. Hits different.", accent: "#FF4090", bg: "#1A0A12" },
-    { name: "White Pineapple", img: "/images/products/white-pineapple.png", desc: "Tropical clarity. Smooth.", accent: C.silver, bg: "#14140F" },
+    { name: "White Pineapple", img: "/images/can-white-pineapple-light.png", desc: "Tropical clarity. Smooth.", accent: "#FFD700", bg: "#14140F" },
   ];
   return (
     <section id="flavors" style={{ background: C.base, padding: "120px clamp(32px,8vw,120px)" }}>
