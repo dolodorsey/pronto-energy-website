@@ -49,8 +49,8 @@ function VideoIntroHero(){
     }}>
       {/* Centered video window that expands */}
       <div style={{
-        width:phase>=1?"100vw":"clamp(280px,40vw,500px)",
-        height:phase>=1?"100vh":"clamp(200px,30vh,350px)",
+        width:"100vw",
+        height:"100vh",
         overflow:"hidden",
         transition:"all 1s cubic-bezier(0.16,1,0.3,1)",
         position:"relative",
