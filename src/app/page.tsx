@@ -83,8 +83,8 @@ function VideoIntroHero() {
           <div style={{ marginTop: "clamp(28px,4vw,52px)", marginLeft: "clamp(0px,6vw,100px)", maxWidth: 500, opacity: phase >= 2 ? 1 : 0, transition: "opacity 1s ease 1s" }}>
             <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: "clamp(17px,1.5vw,22px)", fontWeight: 300, lineHeight: 1.85, color: C.silver, opacity: 0.65 }}>Five bold flavors. Zero sugar. Clean energy for the ones who move first — from the gym floor to the festival ground.</p>
             <div style={{ display: "flex", gap: 14, marginTop: 40, flexWrap: "wrap" }}>
-              <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 48px", cursor: "pointer", transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 16px 48px ${C.volt}40` }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>Shop Now</button>
-              <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 40px", cursor: "pointer", transition: "all 0.3s" }} onMouseEnter={e => { e.currentTarget.style.borderColor = C.glacier; e.currentTarget.style.color = C.glacier }} onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = C.white }}>Wholesale</button>
+              <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 48px", cursor: "pointer", textDecoration: "none", transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)" }}>Order Inquiry</a>
+              <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 40px", cursor: "pointer", textDecoration: "none", transition: "all 0.3s" }}>Wholesale</a>
             </div>
           </div>
         </div>
@@ -329,7 +329,7 @@ function Retail() {
             <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.45em", textTransform: "uppercase", color: C.volt, marginBottom: 16 }}>0{i + 1}</div>
             <div style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: 28, letterSpacing: "0.03em", color: C.white, marginBottom: 12 }}>{ch.title}</div>
             <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: C.muted, marginBottom: 28 }}>{ch.desc}</p>
-            <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: C.volt, background: "transparent", border: `1px solid ${C.volt}20`, padding: "10px 24px", cursor: "pointer", transition: "all 0.3s" }} onMouseEnter={e => { e.currentTarget.style.background = `${C.volt}0c`; e.currentTarget.style.borderColor = C.volt }} onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = `${C.volt}20` }}>{ch.cta} →</button>
+            <a href="/connect" style={{ display: "inline-block", fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: C.volt, background: "transparent", border: `1px solid ${C.volt}20`, padding: "10px 24px", cursor: "pointer", textDecoration: "none", transition: "all 0.3s" }}>{ch.cta} →</a>
           </div></Rev>))}
         </div>
       </div>
@@ -352,8 +352,8 @@ function ClosingCTA() {
           <h2 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(64px,10vw,160px)", fontWeight: 400, lineHeight: 0.88, letterSpacing: "0.03em", color: C.white, marginBottom: 28 }}>GO.<br /><span style={{ background: `linear-gradient(135deg,${C.volt},${C.glacier})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>PRONTO.</span></h2>
           <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 17, fontWeight: 300, lineHeight: 1.9, color: C.muted, maxWidth: 480, margin: "0 auto 48px" }}>Six flavors. Zero sugar. Clean energy for the ones who will not accept a compromise.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 56px", cursor: "pointer", transition: "all 0.4s" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 16px 48px ${C.volt}40` }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>Shop Pronto</button>
-            <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 44px", cursor: "pointer" }}>Wholesale</button>
+            <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 56px", cursor: "pointer", textDecoration: "none", transition: "all 0.4s" }}>Order Inquiry</a>
+            <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 44px", cursor: "pointer", textDecoration: "none" }}>Wholesale</a>
           </div>
         </Rev>
       </div>
@@ -394,8 +394,7 @@ function Footer() {
 export default function ProntoV7() {
   return (
     <div style={{ background: C.base, overflowX: "hidden" }}>
-      <style>{`
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+      <style suppressHydrationWarning>{`
 @media(max-width:1024px){.elemental-grid{grid-template-columns:repeat(3,1fr)!important}.products-grid{grid-template-columns:repeat(3,1fr)!important}}
 @media(max-width:768px){.elemental-grid{grid-template-columns:repeat(2,1fr)!important}.products-grid{grid-template-columns:repeat(2,1fr)!important}.science-grid{grid-template-columns:1fr!important}.retail-grid{grid-template-columns:1fr!important}.footer-grid{grid-template-columns:1fr!important}.nav-link-hide{display:none}}
       `}</style>
