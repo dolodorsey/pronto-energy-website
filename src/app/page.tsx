@@ -74,7 +74,7 @@ function VideoIntroHero() {
         <div style={{ opacity: phase >= 2 ? 1 : 0, transform: phase >= 2 ? "translateY(0)" : "translateY(60px)", transition: "all 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s" }}>
           <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 32, display: "flex", alignItems: "center", gap: 14 }}>
             <span style={{ width: 40, height: 2, background: `linear-gradient(90deg,${C.volt},${C.glacier})`, display: "inline-block" }} />
-            Zero Sugar · Six Flavors · Built for Motion
+            2026 Activation · Retail · Events · Partnerships
           </div>
 
           <h1 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(80px,16vw,240px)", fontWeight: 400, lineHeight: 0.85, letterSpacing: "0.04em", color: C.white, margin: 0 }}>
