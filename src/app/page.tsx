@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 /* ═══════════════════════════════════════════════════════════════════════
    PRONTO ENERGY — V7 EXTRAORDINARY
@@ -72,7 +74,7 @@ function VideoIntroHero() {
         <div style={{ opacity: phase >= 2 ? 1 : 0, transform: phase >= 2 ? "translateY(0)" : "translateY(60px)", transition: "all 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s" }}>
           <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 32, display: "flex", alignItems: "center", gap: 14 }}>
             <span style={{ width: 40, height: 2, background: `linear-gradient(90deg,${C.volt},${C.glacier})`, display: "inline-block" }} />
-            Zero Sugar · No Crash · Six Flavors
+            Zero Sugar · Six Flavors · Built for Motion
           </div>
 
           <h1 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(80px,16vw,240px)", fontWeight: 400, lineHeight: 0.85, letterSpacing: "0.04em", color: C.white, margin: 0 }}>
@@ -81,10 +83,10 @@ function VideoIntroHero() {
           </h1>
 
           <div style={{ marginTop: "clamp(28px,4vw,52px)", marginLeft: "clamp(0px,6vw,100px)", maxWidth: 500, opacity: phase >= 2 ? 1 : 0, transition: "opacity 1s ease 1s" }}>
-            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: "clamp(17px,1.5vw,22px)", fontWeight: 300, lineHeight: 1.85, color: C.silver, opacity: 0.65 }}>Five bold flavors. Zero sugar. Clean energy for the ones who move first — from the gym floor to the festival ground.</p>
+            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: "clamp(17px,1.5vw,22px)", fontWeight: 300, lineHeight: 1.85, color: C.silver, opacity: 0.65 }}>Six bold flavors. Zero sugar. A bright, modern energy drink made for people moving from the gym floor to the festival ground.</p>
             <div style={{ display: "flex", gap: 14, marginTop: 40, flexWrap: "wrap" }}>
-              <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 48px", cursor: "pointer", textDecoration: "none", transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)" }}>Order Inquiry</a>
-              <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 40px", cursor: "pointer", textDecoration: "none", transition: "all 0.3s" }}>Wholesale</a>
+              <Link href="/forms" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 48px", cursor: "pointer", textDecoration: "none", transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)" }}>Order Inquiry</Link>
+              <Link href="/partners" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 40px", cursor: "pointer", textDecoration: "none", transition: "all 0.3s" }}>Wholesale</Link>
             </div>
           </div>
         </div>
@@ -250,12 +252,12 @@ function TripleLifestyle() {
 /* ─── SCIENCE ─── */
 function TheScience() {
   const facts = [
-    { label: "Caffeine", value: "Natural Green Tea Extract", color: C.volt },
-    { label: "Crash Prevention", value: "Extended-Release Formula", color: C.glacier },
-    { label: "Amino Profile", value: "L-Theanine + L-Citrulline", color: C.volt },
-    { label: "B-Vitamins", value: "B3 · B6 · B12 Complex", color: C.glacier },
-    { label: "Sugar", value: "Zero — All Variants", color: C.volt },
-    { label: "Certification", value: "NSF Certified · Clean Label", color: C.glacier },
+    { label: "Sugar", value: "Zero sugar across the current range", color: C.volt },
+    { label: "Flavor Range", value: "Six distinct varieties", color: C.glacier },
+    { label: "Ingredients", value: "Full panel printed on every can", color: C.volt },
+    { label: "Caffeine", value: "Check the can for per-serving amount", color: C.glacier },
+    { label: "Allergens", value: "Consult the current product label", color: C.volt },
+    { label: "Product Details", value: "Production label controls final facts", color: C.glacier },
   ];
   return (
     <section id="science" style={{ background: C.dark, padding: "120px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
@@ -269,7 +271,7 @@ function TheScience() {
           <div>
             <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.6em", textTransform: "uppercase", color: C.volt, marginBottom: 20 }}>The Formula</div>
             <h2 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(44px,6vw,80px)", fontWeight: 400, lineHeight: 0.92, letterSpacing: "0.03em", color: C.white, marginBottom: 24 }}>Built Different.<br /><span style={{ color: C.glacier }}>By Design.</span></h2>
-            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 16, fontWeight: 300, lineHeight: 1.9, color: C.muted, marginBottom: 40 }}>Every ingredient earns its spot. No proprietary blends. No artificial dyes. Clean science at effective doses.</p>
+            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 16, fontWeight: 300, lineHeight: 1.9, color: C.muted, marginBottom: 40 }}>The product label is the source of truth for ingredients, caffeine, allergens, and serving information. Our ingredients page explains how to read it before ordering or serving Pronto.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
               {facts.map(f => (<div key={f.label} style={{ background: C.surface, padding: "22px 18px" }}>
                 <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 7, fontWeight: 700, letterSpacing: "0.45em", textTransform: "uppercase", color: f.color, marginBottom: 8 }}>{f.label}</div>
@@ -329,7 +331,7 @@ function Retail() {
             <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.45em", textTransform: "uppercase", color: C.volt, marginBottom: 16 }}>0{i + 1}</div>
             <div style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: 28, letterSpacing: "0.03em", color: C.white, marginBottom: 12 }}>{ch.title}</div>
             <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: C.muted, marginBottom: 28 }}>{ch.desc}</p>
-            <a href="/connect" style={{ display: "inline-block", fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: C.volt, background: "transparent", border: `1px solid ${C.volt}20`, padding: "10px 24px", cursor: "pointer", textDecoration: "none", transition: "all 0.3s" }}>{ch.cta} →</a>
+            <Link href={i === 0 ? "/forms" : "/partners"} style={{ display: "inline-block", fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: C.volt, background: "transparent", border: `1px solid ${C.volt}20`, padding: "10px 24px", cursor: "pointer", textDecoration: "none", transition: "all 0.3s" }}>{ch.cta} →</Link>
           </div></Rev>))}
         </div>
       </div>
@@ -348,12 +350,12 @@ function ClosingCTA() {
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 55% 50%,${C.voltGlow},transparent 45%),radial-gradient(ellipse at 35% 50%,${C.glacierGlow},transparent 45%)` }} />
       <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
         <Rev>
-          <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 28 }}>No Crash. No Excuse.</div>
+          <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 28 }}>Six Flavors. One Bold Lineup.</div>
           <h2 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(64px,10vw,160px)", fontWeight: 400, lineHeight: 0.88, letterSpacing: "0.03em", color: C.white, marginBottom: 28 }}>GO.<br /><span style={{ background: `linear-gradient(135deg,${C.volt},${C.glacier})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>PRONTO.</span></h2>
           <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 17, fontWeight: 300, lineHeight: 1.9, color: C.muted, maxWidth: 480, margin: "0 auto 48px" }}>Six flavors. Zero sugar. Clean energy for the ones who will not accept a compromise.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 56px", cursor: "pointer", textDecoration: "none", transition: "all 0.4s" }}>Order Inquiry</a>
-            <a href="/connect" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 44px", cursor: "pointer", textDecoration: "none" }}>Wholesale</a>
+            <Link href="/forms" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 56px", cursor: "pointer", textDecoration: "none", transition: "all 0.4s" }}>Order Inquiry</Link>
+            <Link href="/partners" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 44px", cursor: "pointer", textDecoration: "none" }}>Wholesale</Link>
           </div>
         </Rev>
       </div>
@@ -368,11 +370,11 @@ function Nav() {
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999, padding: s ? "10px clamp(24px,6vw,80px)" : "24px clamp(24px,6vw,80px)", display: "flex", justifyContent: "space-between", alignItems: "center", background: s ? `${C.base}f0` : "transparent", backdropFilter: s ? "blur(32px) saturate(1.3)" : "none", borderBottom: s ? `1px solid ${C.border}` : "none", transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: 28, width: "auto", objectFit: "contain" }} />
+        <Image src="/images/pronto-logo.png" alt="Pronto Energy" width={150} height={50} style={{ height: 28, width: "auto", objectFit: "contain" }} />
       </div>
       <div style={{ display: "flex", gap: "clamp(14px,2.5vw,36px)", alignItems: "center" }}>
-        {["Flavors", "Science", "Partners"].map(n => (<a key={n} href={`#${n.toLowerCase()}`} className="nav-link-hide" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 500, letterSpacing: "0.28em", textTransform: "uppercase", color: C.muted, textDecoration: "none", transition: "color 0.3s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{n}</a>))}
-        <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "9px 24px", cursor: "pointer" }}>Get Pronto</button>
+        {[["About","/about"],["Flavors","/flavors"],["Ingredients","/ingredients"],["Retail","/retail"],["Partners","/partners"],["Events","/events"]].map(([label,href]) => (<Link key={href} href={href} className="nav-link-hide" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 500, letterSpacing: "0.22em", textTransform: "uppercase", color: C.muted, textDecoration: "none", transition: "color 0.3s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{label}</Link>))}
+        <Link href="/forms" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "9px 24px", cursor: "pointer", textDecoration: "none" }}>Get Pronto</Link>
       </div>
     </nav>
   );
@@ -384,9 +386,13 @@ function Footer() {
     <div style={{ maxWidth: 1400, margin: "0 auto" }}>
       <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr repeat(3,1fr)", gap: 48, marginBottom: 56 }}>
         <div><div style={{ marginBottom: 16 }}><img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: 32, width: "auto", objectFit: "contain" }} /></div><p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 15, fontWeight: 300, lineHeight: 1.8, color: C.muted }}>Premium energy for performers.<br />No crash. No compromise.</p></div>
-        {[{ h: "Flavors", l: ["Blue Vanilla Ice", "Dragonfruit", "Matcha", "Original", "Strawburst", "White Pineapple"] }, { h: "Business", l: ["Wholesale", "Retail", "Hospitality", "Distributor", "Partnerships"] }, { h: "Company", l: ["About", "The Science", "Certifications", "Press", "A KHG Brand"] }].map(col => (<div key={col.h}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: C.volt, marginBottom: 18 }}>{col.h}</div><ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>{col.l.map(item => <li key={item} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 12, fontWeight: 300, color: C.muted, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{item}</li>)}</ul></div>))}
+        {[
+          { h: "Product", l: [["Flavors", "/flavors"], ["Ingredients", "/ingredients"], ["FAQ", "/faq"]] },
+          { h: "Business", l: [["Retail", "/retail"], ["Partnerships", "/partners"], ["Events", "/events"]] },
+          { h: "Company", l: [["About", "/about"], ["Contact", "/forms"], ["Get Pronto", "/forms"]] },
+        ].map(col => (<div key={col.h}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: C.volt, marginBottom: 18 }}>{col.h}</div><ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>{col.l.map(([item, href]) => <li key={item}><Link href={href} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 12, fontWeight: 300, color: C.muted, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{item}</Link></li>)}</ul></div>))}
       </div>
-      <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.12)" }}>© 2026 Pronto Energy. A Kollective Hospitality Group Brand.</div><div style={{ display: "flex", gap: 24 }}>{["Privacy", "Terms", "Contact"].map(i => <span key={i} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.12)", cursor: "pointer" }}>{i}</span>)}</div></div>
+      <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.3)" }}>© 2026 Pronto Energy. A Kollective Hospitality Group Brand.</div><div style={{ display: "flex", gap: 24 }}><Link href="/faq" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>FAQ</Link><Link href="/forms" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Contact</Link></div></div>
     </div>
   </footer>);
 }
