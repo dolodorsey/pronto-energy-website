@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://pronto-energy.vercel.app"),
   title: "Pronto Energy — Fuel For The Ones Who Move First",
-  description: "5 bold flavors. Zero sugar. No crash. 200mg clean caffeine. Pronto Energy is built for the ones who move first.",
+  description: "Six bold flavors and zero sugar. Explore Pronto Energy products, ingredients, retail, partnerships, events, and ordering information.",
   openGraph: {
-    title: "Pronto Energy — 5 Flavors. Zero Compromise.",
-    description: "Fuel for the ones who move first. Original, Dragonfruit, Blue Vanilla Ice, Matcha, Strawburst.",
+    title: "Pronto Energy — Six Flavors. Zero Sugar.",
+    description: "Explore the Pronto lineup, product information, retail, partnerships, events, and ordering.",
     type: "website",
   },
   twitter: {
