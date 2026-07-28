@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 const BRAND_KEY = 'pronto_energy';
 const BRAND = { name: 'Pronto Energy', bg: '#0A0800', accent: '#FF6D00', text: '#FFF3E0', font: "'DM Sans', sans-serif" };
-const WEBHOOK = 'https://dorsey.app.n8n.cloud/webhook/khg-form-submit';
 const BG_IMG = '/images/forms-bg.png';
 
 const FORMS = {
@@ -167,7 +166,11 @@ export default function FormPage({params}){
   const set=(n,v)=>setData(p=>({...p,[n]:v}));
   const submit=async(e)=>{
     e.preventDefault();setStatus('submitting');
-    try{await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brand_key:BRAND_KEY,form_type:type,full_name:data.full_name||'',email:data.email||'',phone:data.phone||'',form_data:data,source:'standalone_form',submitted_at:new Date().toISOString()})});setStatus('success');}catch{setStatus('error');}
+    try{
+      const response=await fetch('/api/forms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brand_key:BRAND_KEY,form_type:type,full_name:data.full_name||'',email:data.email||'',phone:data.phone||'',form_data:data,source:'standalone_form',submitted_at:new Date().toISOString()})});
+      const payload=await response.json().catch(()=>({}));
+      setStatus(response.ok&&payload.success?'success':'error');
+    }catch{setStatus('error');}
   };
 
   if(!form) return <FormsIndex/>;
