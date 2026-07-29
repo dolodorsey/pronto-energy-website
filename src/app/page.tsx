@@ -36,8 +36,8 @@ function VideoIntroHero() {
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPhase(2);
-      return;
+      const reducedMotionTimer = setTimeout(() => setPhase(2), 0);
+      return () => clearTimeout(reducedMotionTimer);
     }
     const t1 = setTimeout(() => setPhase(1), 2200);
     const t2 = setTimeout(() => setPhase(2), 3200);
