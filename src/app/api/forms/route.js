@@ -14,17 +14,37 @@ import { NextResponse } from 'next/server';
  */
 
 const GHL_API = 'https://services.leadconnectorhq.com';
+const ALLOWED_FORM_TYPES = new Set(['inquiry', 'group_pricing']);
 
 export async function POST(request) {
   try {
+    const contentLength = Number(request.headers.get('content-length') || 0);
+    if (contentLength > 25000) {
+      return NextResponse.json({ error: 'Submission is too large' }, { status: 413 });
+    }
     const body = await request.json();
-    const { formType, name, email, phone, source, fields = {} } = body;
+    const { formType, name, email, phone, source, fields = {}, website, consent, requestId } = body;
+    if (website) return NextResponse.json({ success: true }, { status: 202 });
 
     if (!formType || !name || !email) {
       return NextResponse.json(
         { error: 'Missing required fields: formType, name, email' },
         { status: 400 }
       );
+    }
+    if (
+      typeof formType !== 'string' || !ALLOWED_FORM_TYPES.has(formType) ||
+      typeof name !== 'string' || name.trim().length > 120 ||
+      typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+      (phone && (typeof phone !== 'string' || phone.length > 40)) ||
+      !fields || typeof fields !== 'object' || Array.isArray(fields) ||
+      Object.keys(fields).length > 30 ||
+      JSON.stringify(fields).length > 4000 ||
+      Object.values(fields).some(value => typeof value === 'string' && value.length > 2000) ||
+      consent !== true ||
+      typeof requestId !== 'string' || !/^[a-zA-Z0-9-]{8,80}$/.test(requestId)
+    ) {
+      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
     }
 
     const pitToken = process.env.GHL_PIT_TOKEN;
@@ -45,6 +65,7 @@ export async function POST(request) {
       `═══ ${formType.toUpperCase().replace(/_/g, ' ')} SUBMISSION ═══`,
       `Submitted: ${timestamp}`,
       `Source: ${source || 'Website'}`,
+      `Receipt: ${requestId}`,
       '',
       ...Object.entries(fields).map(([k, v]) => `${k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}: ${v}`),
     ];
@@ -84,41 +105,35 @@ export async function POST(request) {
     if (!contactRes.ok) {
       const errText = await contactRes.text();
       console.error('GHL contact upsert failed:', contactRes.status, errText);
-      // Still return success to user — log for ops
-      return NextResponse.json({
-        success: true,
-        message: 'Form submitted successfully. Our team will be in touch.',
-        _debug: process.env.NODE_ENV === 'development' ? errText : undefined,
-      });
+      return NextResponse.json({ error: 'We could not safely save your request. Please try again.' }, { status: 502 });
     }
 
     const contactData = await contactRes.json();
     const contactId = contactData?.contact?.id;
-
-    // Add notes with form details
-    if (contactId) {
-      try {
-        await fetch(`${GHL_API}/contacts/${contactId}/notes`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${pitToken}`,
-            'Version': '2021-07-28',
-          },
-          body: JSON.stringify({ body: notesText }),
-        });
-      } catch (noteErr) {
-        console.error('Failed to add note:', noteErr);
-      }
+    if (!contactId) {
+      console.error('GHL contact upsert returned no contact id');
+      return NextResponse.json({ error: 'We could not safely save your request. Please try again.' }, { status: 502 });
     }
 
-    // Log to Supabase (fire and forget)
-    logSubmission(formType, email, locationId, contactId).catch(() => {});
+    // Add notes with form details
+    const noteRes = await fetch(`${GHL_API}/contacts/${contactId}/notes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${pitToken}`,
+        'Version': '2021-07-28',
+      },
+      body: JSON.stringify({ body: notesText }),
+    });
+    if (!noteRes.ok) {
+      console.error('GHL note creation failed:', noteRes.status);
+      return NextResponse.json({ error: 'Your contact was saved, but the request details were not. Please try again.' }, { status: 502 });
+    }
 
     return NextResponse.json({
       success: true,
       message: 'Form submitted successfully. Our team will be in touch.',
-      contactId,
+      receiptId: requestId,
     });
   } catch (err) {
     console.error('Form API error:', err);
@@ -127,28 +142,4 @@ export async function POST(request) {
       { status: 500 }
     );
   }
-}
-
-async function logSubmission(formType, email, locationId, contactId) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
-  if (!supabaseUrl || !supabaseKey) return;
-
-  await fetch(`${supabaseUrl}/rest/v1/form_submissions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify({
-      form_type: formType,
-      email,
-      location_id: locationId,
-      ghl_contact_id: contactId,
-      brand_key: process.env.NEXT_PUBLIC_BRAND_KEY,
-      submitted_at: new Date().toISOString(),
-    }),
-  });
 }

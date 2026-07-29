@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 /* ═══════════════════════════════════════════════════════════════════════
    PRONTO ENERGY — V7 EXTRAORDINARY
@@ -34,6 +35,10 @@ function VideoIntroHero() {
   const [phase, setPhase] = useState(0);
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPhase(2);
+      return;
+    }
     const t1 = setTimeout(() => setPhase(1), 2200);
     const t2 = setTimeout(() => setPhase(2), 3200);
     return () => { clearTimeout(t1); clearTimeout(t2); };
@@ -43,6 +48,7 @@ function VideoIntroHero() {
     <>
     {/* FULL-SCREEN INTRO */}
     <div style={{ position: "fixed", inset: 0, zIndex: phase < 2 ? 10000 : -1, background: C.dark, display: "flex", alignItems: "center", justifyContent: "center", opacity: phase >= 2 ? 0 : 1, transition: "opacity 0.8s cubic-bezier(0.16,1,0.3,1)", pointerEvents: phase >= 2 ? "none" : "all" }}>
+      <button type="button" onClick={() => setPhase(2)} style={{ position: "absolute", zIndex: 2, top: 24, right: 24, padding: "10px 14px", border: `1px solid ${C.volt}66`, background: `${C.dark}aa`, color: C.white, fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", cursor: "pointer" }}>Skip intro</button>
       <div style={{ width: "100vw", height: "100vh", overflow: "hidden", position: "relative" }}>
         <video autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.7) contrast(1.1) saturate(0.8)" }}>
           <source src="/videos/portal.mp4" type="video/mp4" />
@@ -50,14 +56,14 @@ function VideoIntroHero() {
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,${C.dark}44 0%,${C.dark}88 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ textAlign: "center" }}>
             <div style={{ width: 3, height: phase >= 1 ? 0 : 48, background: `linear-gradient(180deg,${C.volt},${C.glacier})`, margin: "0 auto 24px", transition: "height 0.8s cubic-bezier(0.16,1,0.3,1)", borderRadius: 2 }} />
-            <img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: "clamp(100px,22vw,220px)", width: "auto", objectFit: "contain", opacity: phase >= 1 ? 0 : 1, transition: "opacity 0.5s ease" }} />
+            <Image src="/images/pronto-logo.png" alt="Pronto Energy" width={1024} height={1024} priority style={{ height: "clamp(100px,22vw,220px)", width: "auto", objectFit: "contain", opacity: phase >= 1 ? 0 : 1, transition: "opacity 0.5s ease" }} />
           </div>
         </div>
       </div>
     </div>
 
     {/* HERO — video is now BG */}
-    <section
+    <section id="main-content"
       onMouseMove={e => setMouse({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight })}
       style={{ minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}
     >
@@ -72,7 +78,7 @@ function VideoIntroHero() {
         <div style={{ opacity: phase >= 2 ? 1 : 0, transform: phase >= 2 ? "translateY(0)" : "translateY(60px)", transition: "all 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s" }}>
           <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 32, display: "flex", alignItems: "center", gap: 14 }}>
             <span style={{ width: 40, height: 2, background: `linear-gradient(90deg,${C.volt},${C.glacier})`, display: "inline-block" }} />
-            Zero Sugar · No Crash · Six Flavors
+            Bold Flavor · Move First
           </div>
 
           <h1 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(80px,16vw,240px)", fontWeight: 400, lineHeight: 0.85, letterSpacing: "0.04em", color: C.white, margin: 0 }}>
@@ -81,10 +87,10 @@ function VideoIntroHero() {
           </h1>
 
           <div style={{ marginTop: "clamp(28px,4vw,52px)", marginLeft: "clamp(0px,6vw,100px)", maxWidth: 500, opacity: phase >= 2 ? 1 : 0, transition: "opacity 1s ease 1s" }}>
-            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: "clamp(17px,1.5vw,22px)", fontWeight: 300, lineHeight: 1.85, color: C.silver, opacity: 0.65 }}>Five bold flavors. Zero sugar. Clean energy for the ones who move first — from the gym floor to the festival ground.</p>
+            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: "clamp(17px,1.5vw,22px)", fontWeight: 300, lineHeight: 1.85, color: C.silver, opacity: 0.65 }}>Bold flavor and unmistakable energy for the ones who move first — from the gym floor to the festival ground.</p>
             <div style={{ display: "flex", gap: 14, marginTop: 40, flexWrap: "wrap" }}>
-              <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 48px", cursor: "pointer", transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 16px 48px ${C.volt}40` }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>Shop Now</button>
-              <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 40px", cursor: "pointer", transition: "all 0.3s" }} onMouseEnter={e => { e.currentTarget.style.borderColor = C.glacier; e.currentTarget.style.color = C.glacier }} onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = C.white }}>Wholesale</button>
+              <a href="/forms/inquiry?interest=consumer" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", textDecoration: "none", color: C.dark, background: C.volt, border: "none", padding: "16px 48px", cursor: "pointer", transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 16px 48px ${C.volt}40` }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>Get Pronto</a>
+              <a href="/forms/group_pricing?interest=wholesale" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", textDecoration: "none", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 40px", cursor: "pointer", transition: "all 0.3s" }} onMouseEnter={e => { e.currentTarget.style.borderColor = C.glacier; e.currentTarget.style.color = C.glacier }} onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = C.white }}>Wholesale</a>
             </div>
           </div>
         </div>
@@ -105,7 +111,7 @@ function LifestyleHero() {
         <div key={i} style={{ position: "relative", aspectRatio: "16/9", overflow: "hidden", cursor: "pointer" }}
           onMouseEnter={e => { const img = e.currentTarget.querySelector("img") as HTMLElement; if (img) img.style.transform = "scale(1.04)" }}
           onMouseLeave={e => { const img = e.currentTarget.querySelector("img") as HTMLElement; if (img) img.style.transform = "scale(1)" }}>
-          <img src={s.img} alt={s.label} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.8s cubic-bezier(0.16,1,0.3,1)" }} />
+          <Image src={s.img} alt={s.label} width={1200} height={900} sizes="(max-width: 768px) 100vw, 50vw" style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.8s cubic-bezier(0.16,1,0.3,1)" }} />
           <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,transparent 40%,${C.dark}ee 100%)` }} />
           <div style={{ position: "absolute", bottom: 32, left: 36 }}>
             <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: s.accent }}>{s.label}</div>
@@ -130,7 +136,7 @@ function ElementalHeroes() {
   return (
     <section style={{ background: C.dark, padding: "120px 0 80px", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-stadium.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
+        <Image src="/images/lifestyle-stadium.png" alt="" width={1536} height={1024} sizes="100vw" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, opacity: 0.03, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ padding: "0 clamp(32px,8vw,120px)", maxWidth: 1400, margin: "0 auto 56px", position: "relative", zIndex: 1 }}>
@@ -145,7 +151,7 @@ function ElementalHeroes() {
               onMouseLeave={e => { e.currentTarget.style.background = C.surface; const img = e.currentTarget.querySelector("img"); if (img) (img as HTMLElement).style.transform = "scale(1)" }}>
               <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 30%,${h.accent}12,transparent 70%)`, pointerEvents: "none" }} />
               <div style={{ width: "100%", aspectRatio: "3/5", overflow: "hidden" }}>
-                <img src={h.img} alt={h.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.7s cubic-bezier(0.16,1,0.3,1)" }} />
+                <Image src={h.img} alt={h.name} width={1024} height={1536} sizes="(max-width: 768px) 50vw, 17vw" style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.7s cubic-bezier(0.16,1,0.3,1)" }} />
               </div>
               <div style={{ padding: "18px 20px 24px" }}>
                 <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 7, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: h.accent, marginBottom: 6 }}>Pronto</div>
@@ -163,7 +169,7 @@ function ElementalHeroes() {
 function BeachBreak() {
   return (
     <section style={{ position: "relative", height: "60vh", overflow: "hidden" }}>
-      <img src="/images/lifestyle/beach-cheers-sunset.png" alt="Friends cheering with Pronto at sunset" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%" }} />
+      <Image src="/images/lifestyle/beach-cheers-sunset.png" alt="Friends cheering with Pronto at sunset" width={1536} height={1024} sizes="100vw" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%" }} />
       <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,${C.dark} 0%,transparent 25%,transparent 65%,${C.dark} 100%),linear-gradient(90deg,${C.dark}cc 0%,transparent 50%)` }} />
       <div style={{ position: "absolute", bottom: "clamp(28px,5vh,60px)", left: "clamp(32px,8vw,120px)", zIndex: 2 }}>
         <Rev><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: C.volt }}>The Pronto Life</div>
@@ -189,7 +195,7 @@ function Products() {
       <div style={{ maxWidth: 1400, margin: "0 auto" }}>
         <Rev><div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 24, marginBottom: 60 }}>
           <div>
-            <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.6em", textTransform: "uppercase", color: C.volt, marginBottom: 20 }}>6 Bold Flavors</div>
+            <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.6em", textTransform: "uppercase", color: C.volt, marginBottom: 20 }}>The Flavor Lineup</div>
             <h2 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(48px,7vw,100px)", fontWeight: 400, lineHeight: 0.92, letterSpacing: "0.03em", color: C.white }}>Pick Your<br />Power.</h2>
           </div>
           <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 16, fontWeight: 300, lineHeight: 1.85, color: C.muted, maxWidth: 400 }}>Each flavor is its own universe. Same clean formula. Different energy.</p>
@@ -201,7 +207,7 @@ function Products() {
                 <div style={{ position: "absolute", top: 0, right: 0, width: "70%", height: "70%", background: `radial-gradient(circle at 100% 0%,${p.accent}0c,transparent 70%)`, pointerEvents: "none" }} />
                 <div style={{ position: "relative", zIndex: 1 }}>
                   <div style={{ width: "100%", aspectRatio: "3/4", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                    <img src={p.img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain", transform: hover === i ? "scale(1.08)" : "scale(1)", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)" }} />
+                    <Image src={p.img} alt={p.name} width={1024} height={1536} sizes="(max-width: 768px) 50vw, 17vw" style={{ width: "100%", height: "100%", objectFit: "contain", transform: hover === i ? "scale(1.08)" : "scale(1)", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)" }} />
                   </div>
                   <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 7, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: p.accent, marginBottom: 6 }}>Pronto</div>
                   <div style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: 18, letterSpacing: "0.04em", color: C.white, marginBottom: 8 }}>{p.name}</div>
@@ -212,7 +218,7 @@ function Products() {
           ))}
         </div>
         <Rev d={0.1}><div style={{ marginTop: 48, position: "relative", overflow: "hidden" }}>
-          <img src="/images/all-flavors.png" alt="Full Lineup" style={{ width: "100%", height: "auto", display: "block" }} />
+          <Image src="/images/all-flavors.png" alt="Full Lineup" width={1536} height={1024} sizes="100vw" style={{ width: "100%", height: "auto", display: "block" }} />
           <div style={{ position: "absolute", inset: 0, background: `linear-gradient(90deg,${C.base}cc 0%,transparent 20%,transparent 80%,${C.base}cc 100%)` }} />
         </div></Rev>
       </div>
@@ -234,7 +240,7 @@ function TripleLifestyle() {
           <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", cursor: "pointer" }}
             onMouseEnter={e => { const img = e.currentTarget.querySelector("img") as HTMLElement; if (img) img.style.transform = "scale(1.04)" }}
             onMouseLeave={e => { const img = e.currentTarget.querySelector("img") as HTMLElement; if (img) img.style.transform = "scale(1)" }}>
-            <img src={s.img} alt={s.label} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.8s cubic-bezier(0.16,1,0.3,1)" }} />
+            <Image src={s.img} alt={s.label} width={1200} height={900} sizes="(max-width: 768px) 100vw, 33vw" style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.8s cubic-bezier(0.16,1,0.3,1)" }} />
             <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,transparent 40%,${C.dark}ee 100%)` }} />
             <div style={{ position: "absolute", bottom: 32, left: 28 }}>
               <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 7, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: s.accent }}>{s.label}</div>
@@ -250,17 +256,17 @@ function TripleLifestyle() {
 /* ─── SCIENCE ─── */
 function TheScience() {
   const facts = [
-    { label: "Caffeine", value: "Natural Green Tea Extract", color: C.volt },
-    { label: "Crash Prevention", value: "Extended-Release Formula", color: C.glacier },
-    { label: "Amino Profile", value: "L-Theanine + L-Citrulline", color: C.volt },
-    { label: "B-Vitamins", value: "B3 · B6 · B12 Complex", color: C.glacier },
-    { label: "Sugar", value: "Zero — All Variants", color: C.volt },
-    { label: "Certification", value: "NSF Certified · Clean Label", color: C.glacier },
+    { label: "Serving", value: "Check the can", color: C.volt },
+    { label: "Caffeine", value: "See product label", color: C.glacier },
+    { label: "Ingredients", value: "SKU-specific label", color: C.volt },
+    { label: "Nutrition", value: "See Nutrition Facts", color: C.glacier },
+    { label: "Responsible use", value: "Know your intake", color: C.volt },
+    { label: "Questions", value: "Product support", color: C.glacier },
   ];
   return (
     <section id="science" style={{ background: C.dark, padding: "120px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-gym.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
+        <Image src="/images/lifestyle-gym.png" alt="" width={1536} height={1024} sizes="100vw" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, opacity: 0.03, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 70% 50%,${C.voltGlow},transparent 55%)` }} />
@@ -269,7 +275,7 @@ function TheScience() {
           <div>
             <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.6em", textTransform: "uppercase", color: C.volt, marginBottom: 20 }}>The Formula</div>
             <h2 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(44px,6vw,80px)", fontWeight: 400, lineHeight: 0.92, letterSpacing: "0.03em", color: C.white, marginBottom: 24 }}>Built Different.<br /><span style={{ color: C.glacier }}>By Design.</span></h2>
-            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 16, fontWeight: 300, lineHeight: 1.9, color: C.muted, marginBottom: 40 }}>Every ingredient earns its spot. No proprietary blends. No artificial dyes. Clean science at effective doses.</p>
+            <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 16, fontWeight: 300, lineHeight: 1.9, color: C.muted, marginBottom: 40 }}>Formulas can vary by product and market. Use the ingredient list, Nutrition Facts, caffeine declaration, and warnings on the can in your possession.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
               {facts.map(f => (<div key={f.label} style={{ background: C.surface, padding: "22px 18px" }}>
                 <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 7, fontWeight: 700, letterSpacing: "0.45em", textTransform: "uppercase", color: f.color, marginBottom: 8 }}>{f.label}</div>
@@ -277,7 +283,7 @@ function TheScience() {
               </div>))}
             </div>
           </div>
-          <div style={{ position: "relative" }}><img src="/images/products/lab-schematic.png" alt="Formula" style={{ width: "100%", height: "auto" }} /><div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,transparent 40%,${C.dark} 100%)` }} /></div>
+          <div style={{ position: "relative" }}><Image src="/images/products/lab-schematic.png" alt="Formula" width={1536} height={1024} sizes="(max-width: 768px) 100vw, 50vw" style={{ width: "100%", height: "auto" }} /><div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,transparent 40%,${C.dark} 100%)` }} /></div>
         </div></Rev>
       </div>
     </section>
@@ -298,7 +304,7 @@ function ConsumerStrip() {
           <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", cursor: "pointer" }}
             onMouseEnter={e => { const img = e.currentTarget.querySelector("img") as HTMLElement; if (img) img.style.transform = "scale(1.05)" }}
             onMouseLeave={e => { const img = e.currentTarget.querySelector("img") as HTMLElement; if (img) img.style.transform = "scale(1)" }}>
-            <img src={s.img} alt={s.label} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.8s cubic-bezier(0.16,1,0.3,1)" }} />
+            <Image src={s.img} alt={s.label} width={1200} height={900} sizes="(max-width: 768px) 50vw, 25vw" style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.8s cubic-bezier(0.16,1,0.3,1)" }} />
             <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg,transparent 60%,${C.dark}cc 100%)` }} />
             <div style={{ position: "absolute", bottom: 20, left: 20, fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.45em", textTransform: "uppercase", color: C.volt }}>{s.label}</div>
           </div>
@@ -311,15 +317,15 @@ function ConsumerStrip() {
 /* ─── RETAIL ─── */
 function Retail() {
   const channels = [
-    { title: "Direct to Consumer", desc: "Order Pronto directly. Bundles, subscriptions, single-unit.", cta: "Shop Now" },
-    { title: "Retail Placement", desc: "Grocery, convenience, and specialty retail.", cta: "Retail Inquiry" },
-    { title: "Hospitality & Events", desc: "Hotels, venues, gyms, stadiums, corporate.", cta: "Venue Supply" },
-    { title: "Wholesale Distribution", desc: "Regional and national distribution.", cta: "Distributor Inquiry" },
+    { title: "Direct to Consumer", desc: "Tell us what you want to order and where Pronto should reach you.", cta: "Get Pronto", href: "/forms/inquiry?interest=consumer" },
+    { title: "Retail Placement", desc: "Grocery, convenience, and specialty retail.", cta: "Retail Inquiry", href: "/forms/inquiry?interest=retail" },
+    { title: "Hospitality & Events", desc: "Hotels, venues, gyms, stadiums, corporate.", cta: "Venue Supply", href: "/forms/group_pricing?interest=venue" },
+    { title: "Wholesale Distribution", desc: "Regional and national distribution.", cta: "Distributor Inquiry", href: "/forms/group_pricing?interest=distribution" },
   ];
   return (
     <section id="partners" style={{ background: `linear-gradient(180deg,${C.surface} 0%,${C.base} 100%)`, padding: "120px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-nightclub.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
+        <Image src="/images/lifestyle-nightclub.png" alt="" width={1536} height={1024} sizes="100vw" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ maxWidth: 1400, margin: "0 auto" }}>
         <Rev><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.6em", textTransform: "uppercase", color: C.volt, marginBottom: 20 }}>Distribution</div>
@@ -329,7 +335,7 @@ function Retail() {
             <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.45em", textTransform: "uppercase", color: C.volt, marginBottom: 16 }}>0{i + 1}</div>
             <div style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: 28, letterSpacing: "0.03em", color: C.white, marginBottom: 12 }}>{ch.title}</div>
             <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 14, fontWeight: 300, lineHeight: 1.8, color: C.muted, marginBottom: 28 }}>{ch.desc}</p>
-            <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: C.volt, background: "transparent", border: `1px solid ${C.volt}20`, padding: "10px 24px", cursor: "pointer", transition: "all 0.3s" }} onMouseEnter={e => { e.currentTarget.style.background = `${C.volt}0c`; e.currentTarget.style.borderColor = C.volt }} onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = `${C.volt}20` }}>{ch.cta} →</button>
+            <a href={ch.href} style={{ display: "inline-block", fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", textDecoration: "none", color: C.volt, background: "transparent", border: `1px solid ${C.volt}20`, padding: "10px 24px", cursor: "pointer", transition: "all 0.3s" }} onMouseEnter={e => { e.currentTarget.style.background = `${C.volt}0c`; e.currentTarget.style.borderColor = C.volt }} onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = `${C.volt}20` }}>{ch.cta} →</a>
           </div></Rev>))}
         </div>
       </div>
@@ -342,18 +348,18 @@ function ClosingCTA() {
   return (
     <section style={{ background: C.dark, padding: "160px clamp(32px,8vw,120px)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, opacity: 0.14, pointerEvents: "none" }}>
-        <img src="/images/lifestyle-festival.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
+        <Image src="/images/lifestyle-festival.png" alt="" width={1536} height={1024} sizes="100vw" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.4) saturate(0.3)" }} />
       </div>
       <div style={{ position: "absolute", inset: 0, opacity: 0.03, pointerEvents: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 55% 50%,${C.voltGlow},transparent 45%),radial-gradient(ellipse at 35% 50%,${C.glacierGlow},transparent 45%)` }} />
       <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
         <Rev>
-          <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 28 }}>No Crash. No Excuse.</div>
+          <div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.7em", textTransform: "uppercase", color: C.volt, marginBottom: 28 }}>Move First.</div>
           <h2 style={{ fontFamily: "'Bebas Neue',Impact,sans-serif", fontSize: "clamp(64px,10vw,160px)", fontWeight: 400, lineHeight: 0.88, letterSpacing: "0.03em", color: C.white, marginBottom: 28 }}>GO.<br /><span style={{ background: `linear-gradient(135deg,${C.volt},${C.glacier})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>PRONTO.</span></h2>
-          <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 17, fontWeight: 300, lineHeight: 1.9, color: C.muted, maxWidth: 480, margin: "0 auto 48px" }}>Six flavors. Zero sugar. Clean energy for the ones who will not accept a compromise.</p>
+          <p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 17, fontWeight: 300, lineHeight: 1.9, color: C.muted, maxWidth: 480, margin: "0 auto 48px" }}>Explore the Pronto lineup, then connect with our team for availability and placement.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "16px 56px", cursor: "pointer", transition: "all 0.4s" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 16px 48px ${C.volt}40` }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>Shop Pronto</button>
-            <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 44px", cursor: "pointer" }}>Wholesale</button>
+            <a href="/forms/inquiry?interest=consumer" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", textDecoration: "none", color: C.dark, background: C.volt, border: "none", padding: "16px 56px", cursor: "pointer", transition: "all 0.4s" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 16px 48px ${C.volt}40` }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>Get Pronto</a>
+            <a href="/forms/group_pricing?interest=wholesale" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", textDecoration: "none", color: C.white, background: "transparent", border: `1px solid ${C.dim}`, padding: "16px 44px", cursor: "pointer" }}>Wholesale</a>
           </div>
         </Rev>
       </div>
@@ -368,11 +374,11 @@ function Nav() {
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999, padding: s ? "10px clamp(24px,6vw,80px)" : "24px clamp(24px,6vw,80px)", display: "flex", justifyContent: "space-between", alignItems: "center", background: s ? `${C.base}f0` : "transparent", backdropFilter: s ? "blur(32px) saturate(1.3)" : "none", borderBottom: s ? `1px solid ${C.border}` : "none", transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: 28, width: "auto", objectFit: "contain" }} />
+        <Image src="/images/pronto-logo.png" alt="Pronto Energy" width={1024} height={1024} style={{ height: 28, width: "auto", objectFit: "contain" }} />
       </div>
       <div style={{ display: "flex", gap: "clamp(14px,2.5vw,36px)", alignItems: "center" }}>
         {["Flavors", "Science", "Partners"].map(n => (<a key={n} href={`#${n.toLowerCase()}`} className="nav-link-hide" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 500, letterSpacing: "0.28em", textTransform: "uppercase", color: C.muted, textDecoration: "none", transition: "color 0.3s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{n}</a>))}
-        <button style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dark, background: C.volt, border: "none", padding: "9px 24px", cursor: "pointer" }}>Get Pronto</button>
+        <a href="/forms/inquiry?interest=consumer" style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", textDecoration: "none", color: C.dark, background: C.volt, border: "none", padding: "9px 24px", cursor: "pointer" }}>Get Pronto</a>
       </div>
     </nav>
   );
@@ -383,22 +389,17 @@ function Footer() {
   return (<footer style={{ background: C.dark, borderTop: `1px solid ${C.border}`, padding: "64px clamp(32px,8vw,120px) 40px" }}>
     <div style={{ maxWidth: 1400, margin: "0 auto" }}>
       <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr repeat(3,1fr)", gap: 48, marginBottom: 56 }}>
-        <div><div style={{ marginBottom: 16 }}><img src="/images/pronto-logo.png" alt="Pronto Energy" style={{ height: 32, width: "auto", objectFit: "contain" }} /></div><p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 15, fontWeight: 300, lineHeight: 1.8, color: C.muted }}>Premium energy for performers.<br />No crash. No compromise.</p></div>
+        <div><div style={{ marginBottom: 16 }}><Image src="/images/pronto-logo.png" alt="Pronto Energy" width={1024} height={1024} style={{ height: 32, width: "auto", objectFit: "contain" }} /></div><p style={{ fontFamily: "'DM Sans',system-ui", fontSize: 15, fontWeight: 300, lineHeight: 1.8, color: C.muted }}>Bold energy for the ones<br />who move first.</p></div>
         {[{ h: "Flavors", l: ["Blue Vanilla Ice", "Dragonfruit", "Matcha", "Original", "Strawburst", "White Pineapple"] }, { h: "Business", l: ["Wholesale", "Retail", "Hospitality", "Distributor", "Partnerships"] }, { h: "Company", l: ["About", "The Science", "Certifications", "Press", "A KHG Brand"] }].map(col => (<div key={col.h}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 700, letterSpacing: "0.5em", textTransform: "uppercase", color: C.volt, marginBottom: 18 }}>{col.h}</div><ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>{col.l.map(item => <li key={item} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 12, fontWeight: 300, color: C.muted, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => (e.target as HTMLElement).style.color = C.white} onMouseLeave={e => (e.target as HTMLElement).style.color = "rgba(217,222,229,0.45)"}>{item}</li>)}</ul></div>))}
       </div>
-      <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.12)" }}>© 2026 Pronto Energy. A Kollective Hospitality Group Brand.</div><div style={{ display: "flex", gap: 24 }}>{["Privacy", "Terms", "Contact"].map(i => <span key={i} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 10, fontWeight: 300, color: "rgba(255,255,255,0.12)", cursor: "pointer" }}>{i}</span>)}</div></div>
+      <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}><div style={{ fontFamily: "'DM Sans',system-ui", fontSize: 11, fontWeight: 300, color: "rgba(255,255,255,0.55)" }}>© 2026 Pronto Energy. A Kollective Hospitality Group Brand.</div><div style={{ display: "flex", gap: 24, flexWrap:"wrap" }}>{[{n:"Safety",u:"/safety"},{n:"Privacy",u:"/privacy"},{n:"Terms",u:"/terms"},{n:"Contact",u:"/contact"}].map(i => <a key={i.n} href={i.u} style={{ fontFamily: "'DM Sans',system-ui", fontSize: 12, fontWeight: 400, color: "rgba(255,255,255,0.72)", textDecoration:"none" }}>{i.n}</a>)}</div></div>
     </div>
   </footer>);
 }
 
 export default function ProntoV7() {
   return (
-    <div style={{ background: C.base, overflowX: "hidden" }}>
-      <style>{`
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-@media(max-width:1024px){.elemental-grid{grid-template-columns:repeat(3,1fr)!important}.products-grid{grid-template-columns:repeat(3,1fr)!important}}
-@media(max-width:768px){.elemental-grid{grid-template-columns:repeat(2,1fr)!important}.products-grid{grid-template-columns:repeat(2,1fr)!important}.science-grid{grid-template-columns:1fr!important}.retail-grid{grid-template-columns:1fr!important}.footer-grid{grid-template-columns:1fr!important}.nav-link-hide{display:none}}
-      `}</style>
+    <main style={{ background: C.base, overflowX: "hidden" }}>
       <Nav />
       <VideoIntroHero />
       <LifestyleHero />
@@ -411,6 +412,6 @@ export default function ProntoV7() {
       <Retail />
       <ClosingCTA />
       <Footer />
-    </div>
+    </main>
   );
 }
