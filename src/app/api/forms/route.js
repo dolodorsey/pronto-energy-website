@@ -61,6 +61,15 @@ export async function POST(request) {
     // Build the notes string with all form-specific fields
     const formTag = `form_${formType}`;
     const timestamp = new Date().toISOString();
+    const durableReceipt = await persistSubmission({
+      formType, name, email, phone, source, fields, requestId, timestamp,
+    });
+    if (!durableReceipt) {
+      return NextResponse.json(
+        { error: 'We could not safely save your request. Please try again.' },
+        { status: 503 }
+      );
+    }
     const notesLines = [
       `═══ ${formType.toUpperCase().replace(/_/g, ' ')} SUBMISSION ═══`,
       `Submitted: ${timestamp}`,
@@ -142,4 +151,43 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+}
+
+async function persistSubmission({ formType, name, email, phone, source, fields, requestId, timestamp }) {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY
+    || process.env.SUPABASE_PUBLISHABLE_KEY
+    || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing SUPABASE_URL or Supabase server credential');
+    return false;
+  }
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/quote_requests?on_conflict=reference`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      Prefer: 'resolution=ignore-duplicates,return=minimal',
+    },
+    body: JSON.stringify({
+      brand_key: 'pronto',
+      name,
+      email,
+      phone: phone || null,
+      organization: fields.business_name || fields.company || null,
+      details: JSON.stringify({ formType, intent: fields.intent || 'general', fields }),
+      reference: requestId,
+      workflow_status: 'submitted',
+      consent_at: timestamp,
+      source_page: source || 'website',
+      utm: {},
+      inquiry_type: formType,
+      assigned_team: 'Pronto Energy Sales',
+    }),
+  });
+  if (response.ok || response.status === 409) return true;
+  console.error('Durable receipt persistence failed:', response.status);
+  return false;
 }
