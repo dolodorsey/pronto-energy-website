@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "verify:isolation": "node scripts/verify-pronto-isolation.mjs",
+    "build": "npm run verify:isolation && next build",
     "start": "next start",
     "lint": "eslint ."
   },
