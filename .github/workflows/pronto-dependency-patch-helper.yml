@@ -1,0 +1,53 @@
+name: Pronto dependency patch helper
+
+on:
+  push:
+    branches:
+      - upgrade/pronto-isolated-intake-20260904
+
+permissions:
+  contents: write
+
+jobs:
+  patch-lockfile:
+    if: ${{ !contains(github.event.head_commit.message, '[skip lock helper]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pronto branch
+        uses: actions/checkout@v4
+        with:
+          ref: upgrade/pronto-isolated-intake-20260904
+
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Patch Next.js security release and regenerate lockfile
+        run: npm install next@16.3.3 eslint-config-next@16.3.3 --save-exact
+
+      - name: Production dependency audit
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Lint
+        run: npm run lint
+
+      - name: TypeScript
+        run: npx tsc --noEmit
+
+      - name: Pronto isolation + production build
+        run: npm run build
+
+      - name: Commit regenerated dependency graph
+        shell: bash
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "Dependency graph already current."
+            exit 0
+          fi
+          git config user.name "KHG Release Bot"
+          git config user.email "deploy@khg.com"
+          git add package.json package-lock.json
+          git commit -m "Patch Pronto Next.js security release [skip lock helper]"
+          git push origin HEAD:upgrade/pronto-isolated-intake-20260904
