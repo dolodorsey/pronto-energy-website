@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import ProntoExperienceLayer from "@/components/ProntoExperienceLayer";
 import "./globals.css";
+import "./experience-layer.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://pronto-energy.vercel.app"),
@@ -25,7 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body><ProntoExperienceLayer/>{children}</body>
     </html>
   );
 }
