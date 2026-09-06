@@ -1,0 +1,66 @@
+name: Pronto Security Remediation
+
+on:
+  push:
+    branches:
+      - upgrade/pronto-isolated-intake-20260904
+    paths:
+      - .github/workflows/pronto-security-remediation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  remediate:
+    name: Upgrade and verify Pronto runtime
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Pronto branch
+        uses: actions/checkout@v4
+        with:
+          ref: upgrade/pronto-isolated-intake-20260904
+          fetch-depth: 0
+
+      - name: Use pinned Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Upgrade patched framework line
+        run: |
+          npm install --save-exact next@16.3.3
+          npm install --save-dev --save-exact eslint-config-next@16.3.3
+          npm pkg set engines.node='24.x'
+
+      - name: Verify deterministic install
+        run: npm ci
+
+      - name: Verify Pronto isolation
+        run: npm run verify:isolation
+
+      - name: Verify Pronto security floor
+        run: npm run verify:security
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Production build
+        run: npm run build
+
+      - name: Commit verified lockfile and remove one-shot workflow
+        run: |
+          git config user.name 'kollective-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm .github/workflows/pronto-security-remediation.yml
+          git add package.json package-lock.json
+          if git diff --cached --quiet; then
+            echo 'No verified dependency changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Patch Pronto runtime security floor and pin Node 24'
+          git push origin HEAD:upgrade/pronto-isolated-intake-20260904
