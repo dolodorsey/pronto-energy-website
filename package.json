@@ -9,7 +9,8 @@
     "dev": "next dev",
     "verify:isolation": "node scripts/verify-pronto-isolation.mjs",
     "verify:security": "node scripts/verify-pronto-runtime-security.mjs",
-    "build": "npm run verify:isolation && npm run verify:security && next build",
+    "verify:intake": "node scripts/verify-pronto-intake-resilience.mjs",
+    "build": "npm run verify:isolation && npm run verify:security && npm run verify:intake && next build",
     "start": "next start",
     "lint": "eslint ."
   },
