@@ -10,8 +10,11 @@ const requiredRouteMarkers = [
   "const BRAND_KEY = 'pronto'",
   "const ASSIGNED_TEAM = 'Pronto Energy Sales'",
   "const PRONTO_GHL_LOCATION_ID = 'P3Xk1DXrNRFozNsGQeJ8'",
+  'const UPSTREAM_TIMEOUT_MS = 5000',
   '/rest/v1/pronto_quote_requests',
-  'crmQueued: true',
+  'syncFallbackCrm',
+  "'Retry-After': '60'",
+  "persistence: outcome.persistence",
 ];
 
 for (const marker of requiredRouteMarkers) {
@@ -24,6 +27,8 @@ const forbiddenRouteMarkers = [
   '/rest/v1/quote_requests',
   'process.env.GHL_LOCATION_ID',
   "assigned_team: 'Water Portfolio Sales'",
+  'Infinity Water',
+  'ORA Sparkling Water',
 ];
 
 for (const marker of forbiddenRouteMarkers) {
