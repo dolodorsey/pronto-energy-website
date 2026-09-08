@@ -8,6 +8,7 @@ const PRONTO_GHL_LOCATION_ID = 'P3Xk1DXrNRFozNsGQeJ8';
 const GHL_API = 'https://services.leadconnectorhq.com';
 const UPSTREAM_TIMEOUT_MS = 5000;
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
+const ALLOWED_REQUEST_BRANDS = new Set(['pronto', 'pronto_energy']);
 
 function clean(value, max = 5000) {
   return typeof value === 'string' ? value.trim().slice(0, max) : '';
@@ -18,6 +19,26 @@ function cleanUtm(value) {
   return Object.fromEntries(
     UTM_KEYS.map((key) => [key, clean(value[key], 200)]).filter(([, item]) => item)
   );
+}
+
+function utmFromReferer(request) {
+  const referer = request.headers.get('referer');
+  if (!referer) return {};
+
+  try {
+    const url = new URL(referer);
+    return Object.fromEntries(
+      UTM_KEYS.map((key) => [key, clean(url.searchParams.get(key), 200)]).filter(([, item]) => item)
+    );
+  } catch {
+    return {};
+  }
+}
+
+function formatAttribution(utm) {
+  const entries = Object.entries(utm || {});
+  if (!entries.length) return 'Attribution: none captured';
+  return `Attribution: ${entries.map(([key, value]) => `${key}=${value}`).join('; ')}`;
 }
 
 function formDetails(formType, fields) {
@@ -79,7 +100,7 @@ async function storeLead({ reference, formType, name, email, phone, source, fiel
   }
 }
 
-async function syncFallbackCrm({ reference, formType, name, email, phone, fields }) {
+async function syncFallbackCrm({ reference, formType, name, email, phone, fields, utm }) {
   const pitToken = process.env.GHL_PIT_TOKEN;
   if (!pitToken) return false;
 
@@ -116,7 +137,7 @@ async function syncFallbackCrm({ reference, formType, name, email, phone, fields
       Version: '2021-07-28',
     },
     body: JSON.stringify({
-      body: `Pronto reference: ${reference}\nPersistence: CRM fallback while database unavailable\n${formDetails(formType, fields)}`,
+      body: `Pronto reference: ${reference}\nPersistence: CRM fallback while database unavailable\n${formatAttribution(utm)}\n${formDetails(formType, fields)}`,
     }),
     signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
   });
@@ -129,13 +150,23 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
+    const requestBrand = clean(body.brand_key || body.brand, 80).toLowerCase();
+
+    if (!ALLOWED_REQUEST_BRANDS.has(requestBrand)) {
+      return NextResponse.json(
+        { success: false, error: 'invalid_pronto_brand' },
+        { status: 400, headers: { 'Cache-Control': 'no-store' } }
+      );
+    }
+
     const formType = clean(body.formType || body.form_type, 80);
     const name = clean(body.name || body.full_name, 120);
     const email = clean(body.email, 254).toLowerCase();
     const phone = clean(body.phone, 50);
-    const source = clean(body.source, 500);
+    const referer = clean(request.headers.get('referer'), 500);
+    const source = clean(body.source, 500) || referer;
     const fields = body.fields || body.form_data || body;
-    const utm = cleanUtm(body.utm);
+    const utm = { ...utmFromReferer(request), ...cleanUtm(body.utm) };
 
     if (clean(fields.company_website, 200)) {
       return NextResponse.json({ success: true });
@@ -147,7 +178,7 @@ export async function POST(request) {
     ) {
       return NextResponse.json(
         { success: false, error: 'Please provide a valid form type, name, and email.' },
-        { status: 400 }
+        { status: 400, headers: { 'Cache-Control': 'no-store' } }
       );
     }
 
@@ -167,6 +198,7 @@ export async function POST(request) {
         email,
         phone,
         fields,
+        utm,
       }).catch((crmError) => {
         console.error('Pronto CRM fallback failed:', crmError?.message || crmError);
         return false;
