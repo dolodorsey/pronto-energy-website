@@ -5,6 +5,7 @@ const BRAND_KEY = 'pronto';
 const BRAND_NAME = 'Pronto Energy';
 const ASSIGNED_TEAM = 'Pronto Energy Sales';
 const PRONTO_GHL_LOCATION_ID = 'P3Xk1DXrNRFozNsGQeJ8';
+const PRONTO_GHL_FALLBACK_CERTIFIED = process.env.PRONTO_GHL_FALLBACK_CERTIFIED === 'true';
 const GHL_API = 'https://services.leadconnectorhq.com';
 const UPSTREAM_TIMEOUT_MS = 5000;
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
@@ -89,6 +90,7 @@ async function storeLead({ reference, formType, name, email, phone, source, fiel
       reference,
       workflow_status: 'submitted',
       consent_at: new Date().toISOString(),
+      marketing_consent: false,
       source_page: source || `${BRAND_NAME} Website`,
       utm,
       assigned_team: ASSIGNED_TEAM,
@@ -103,7 +105,7 @@ async function storeLead({ reference, formType, name, email, phone, source, fiel
 
 async function syncFallbackCrm({ reference, formType, name, email, phone, fields, utm }) {
   const pitToken = process.env.GHL_PIT_TOKEN;
-  if (!pitToken) return false;
+  if (!pitToken || !PRONTO_GHL_FALLBACK_CERTIFIED) return false;
 
   const [firstName = '', ...lastNameParts] = name.split(/\s+/);
   const contactResponse = await fetch(`${GHL_API}/contacts/upsert`, {
@@ -120,7 +122,14 @@ async function syncFallbackCrm({ reference, formType, name, email, phone, fields
       phone: phone || undefined,
       locationId: PRONTO_GHL_LOCATION_ID,
       source: `${BRAND_NAME}: ${formType.replaceAll('_', ' ')}`,
-      tags: [`form_${formType}`, 'website_form', BRAND_KEY, 'database_fallback'],
+      tags: [
+        `form_${formType}`,
+        'website_form',
+        BRAND_KEY,
+        'database_fallback',
+        'inquiry_only',
+        'marketing_consent_unverified',
+      ],
     }),
     signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
   });
@@ -138,7 +147,7 @@ async function syncFallbackCrm({ reference, formType, name, email, phone, fields
       Version: '2021-07-28',
     },
     body: JSON.stringify({
-      body: `Pronto reference: ${reference}\nPersistence: CRM fallback while database unavailable\n${formatAttribution(utm)}\n${formDetails(formType, fields)}`,
+      body: `Pronto reference: ${reference}\nPersistence: CRM fallback while database unavailable\nMarketing consent: not collected\n${formatAttribution(utm)}\n${formDetails(formType, fields)}`,
     }),
     signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
   });
