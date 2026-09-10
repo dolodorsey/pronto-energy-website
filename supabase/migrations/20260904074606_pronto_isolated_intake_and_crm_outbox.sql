@@ -18,6 +18,7 @@ create table if not exists public.pronto_quote_requests (
   reference text not null unique check (reference like 'PRONTO-%' and char_length(reference) <= 64),
   workflow_status text not null default 'submitted' check (workflow_status = 'submitted'),
   consent_at timestamptz not null,
+  marketing_consent boolean not null default false check (marketing_consent = false),
   source_page text check (source_page is null or char_length(source_page) <= 500),
   utm jsonb not null default '{}'::jsonb check (jsonb_typeof(utm) = 'object'),
   assigned_team text not null default 'Pronto Energy Sales' check (assigned_team = 'Pronto Energy Sales')
@@ -47,9 +48,10 @@ with check (
   and assigned_team = 'Pronto Energy Sales'
   and workflow_status = 'submitted'
   and consent_at is not null
+  and marketing_consent = false
   and char_length(btrim(name)) between 2 and 120
   and char_length(email) between 5 and 254
-  and email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+[.][A-Z]{2,}$'
+  and email ~* '^[A-Z0-9._%+-]+@[A-Z]{2,}$'
   and char_length(inquiry_type) between 2 and 80
 );
 
@@ -108,4 +110,6 @@ after insert on public.pronto_quote_requests
 for each row execute function public.enqueue_pronto_crm_outbox();
 
 comment on table public.pronto_quote_requests is 'Pronto Energy website intake only. Do not route other Water Portfolio brands here.';
+comment on column public.pronto_quote_requests.consent_at is 'Timestamp the user intentionally submitted a Pronto inquiry; this is not marketing consent.';
+comment on column public.pronto_quote_requests.marketing_consent is 'False for this intake surface because no explicit marketing opt-in is collected.';
 comment on table public.pronto_crm_outbox is 'Pronto Energy CRM delivery queue locked to GHL location P3Xk1DXrNRFozNsGQeJ8.';
