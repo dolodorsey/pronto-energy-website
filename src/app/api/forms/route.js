@@ -9,6 +9,7 @@ const GHL_API = 'https://services.leadconnectorhq.com';
 const UPSTREAM_TIMEOUT_MS = 5000;
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
 const ALLOWED_REQUEST_BRANDS = new Set(['pronto', 'pronto_energy']);
+const ALLOWED_FORM_TYPES = new Set(['vendor', 'influencer', 'sponsor', 'inquiry']);
 
 function clean(value, max = 5000) {
   return typeof value === 'string' ? value.trim().slice(0, max) : '';
@@ -160,6 +161,13 @@ export async function POST(request) {
     }
 
     const formType = clean(body.formType || body.form_type, 80);
+    if (!ALLOWED_FORM_TYPES.has(formType)) {
+      return NextResponse.json(
+        { success: false, error: 'unsupported_pronto_form' },
+        { status: 400, headers: { 'Cache-Control': 'no-store' } }
+      );
+    }
+
     const name = clean(body.name || body.full_name, 120);
     const email = clean(body.email, 254).toLowerCase();
     const phone = clean(body.phone, 50);
