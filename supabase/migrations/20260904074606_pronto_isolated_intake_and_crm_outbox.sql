@@ -18,11 +18,36 @@ create table if not exists public.pronto_quote_requests (
   reference text not null unique check (reference like 'PRONTO-%' and char_length(reference) <= 64),
   workflow_status text not null default 'submitted' check (workflow_status = 'submitted'),
   consent_at timestamptz not null,
-  marketing_consent boolean not null default false check (marketing_consent = false),
+  marketing_consent boolean not null default false,
   source_page text check (source_page is null or char_length(source_page) <= 500),
   utm jsonb not null default '{}'::jsonb check (jsonb_typeof(utm) = 'object'),
   assigned_team text not null default 'Pronto Energy Sales' check (assigned_team = 'Pronto Energy Sales')
 );
+
+-- Existing Pronto tables may predate this migration revision. Make the consent
+-- hardening idempotent instead of assuming CREATE TABLE will alter an existing table.
+alter table public.pronto_quote_requests
+  add column if not exists marketing_consent boolean;
+update public.pronto_quote_requests
+  set marketing_consent = false
+  where marketing_consent is null;
+alter table public.pronto_quote_requests
+  alter column marketing_consent set default false,
+  alter column marketing_consent set not null;
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'pronto_quote_requests_marketing_consent_false_chk'
+      and conrelid = 'public.pronto_quote_requests'::regclass
+  ) then
+    alter table public.pronto_quote_requests
+      add constraint pronto_quote_requests_marketing_consent_false_chk
+      check (marketing_consent = false);
+  end if;
+end
+$$;
 
 create index if not exists pronto_quote_requests_created_at_idx
   on public.pronto_quote_requests (created_at desc);
