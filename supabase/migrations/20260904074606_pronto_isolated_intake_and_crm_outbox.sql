@@ -51,7 +51,7 @@ with check (
   and marketing_consent = false
   and char_length(btrim(name)) between 2 and 120
   and char_length(email) between 5 and 254
-  and email ~* '^[A-Z0-9._%+-]+@[A-Z]{2,}$'
+  and email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+[.][A-Z]{2,}$'
   and char_length(inquiry_type) between 2 and 80
 );
 
