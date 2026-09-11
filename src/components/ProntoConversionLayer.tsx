@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 
 export default function ProntoConversionLayer() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -36,9 +37,9 @@ export default function ProntoConversionLayer() {
   return (
     <aside className="pronto-conversion" aria-label="Pronto Energy commercial actions">
       <div className="pronto-conversion__links">
-        <a href="/retail">Retail</a>
-        <a href="/partners">Wholesale + distribution</a>
-        <a className="pronto-conversion__primary" href="/connect">Open a Pronto account</a>
+        <Link href="/retail">Retail</Link>
+        <Link href="/partners">Wholesale + distribution</Link>
+        <Link className="pronto-conversion__primary" href="/connect">Open a Pronto account</Link>
       </div>
       <form className="pronto-conversion__email" onSubmit={submit}>
         <label htmlFor="pronto-updates-email">Drops + placements + events</label>
