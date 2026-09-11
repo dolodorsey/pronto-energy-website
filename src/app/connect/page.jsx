@@ -9,6 +9,8 @@ const DIRECT_FORMS = [
   ['Events & Sponsorships', 'https://khg-forms.vercel.app/water/pronto-energy/events'],
 ];
 
+const SECONDARY_FORMS = ['vendor', 'influencer', 'sponsor', 'inquiry'];
+
 export default function ConnectPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#080808' }}>
@@ -24,7 +26,7 @@ export default function ConnectPage() {
           Connect With Us
         </h1>
         <p style={{ fontSize: 'clamp(14px, 1.5vw, 17px)', color: 'rgba(255,255,255,0.62)', maxWidth: 620, margin: '0 auto', lineHeight: 1.6 }}>
-          Choose a direct sales or activation inquiry, or use the existing connection forms below.
+          Choose a direct sales or activation inquiry, or select a Pronto partnership path below.
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 10, marginTop: 26 }}>
           {DIRECT_FORMS.map(([label, href]) => (
@@ -34,9 +36,13 @@ export default function ConnectPage() {
             }}>{label} ↗</a>
           ))}
         </div>
-        <a href="https://khg-forms.vercel.app/water/pronto-energy" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: 16, color: '#f5b942', fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', textDecoration: 'none' }}>View every Pronto Energy inquiry →</a>
       </section>
-      <KHGFormGrid brandKey="pronto_energy" showSelective={false} />
+      <KHGFormGrid
+        brandKey="pronto_energy"
+        forms={SECONDARY_FORMS}
+        title="Partner With Pronto"
+        subtitle="Vendor, creator, sponsorship, and general brand inquiries."
+      />
     </main>
   );
 }
