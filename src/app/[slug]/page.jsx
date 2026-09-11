@@ -11,22 +11,13 @@ export async function generateMetadata({ params }) {
   const page = sitePages[slug];
   if (!page) return {};
   return {
-    title: page.title,
+    title: `${page.title} — Pronto Energy`,
     description: page.description,
-    keywords: ['Pronto Energy', page.eyebrow, page.title],
     alternates: { canonical: `/${slug}` },
     openGraph: {
       title: `${page.title} — Pronto Energy`,
       description: page.description,
-      type: 'website',
-      url: `/${slug}`,
-      images: [{ url: page.hero, alt: `${page.title} — Pronto Energy` }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${page.title} — Pronto Energy`,
-      description: page.description,
-      images: [page.hero],
+      images: [{ url: page.hero }],
     },
   };
 }
