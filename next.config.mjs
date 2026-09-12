@@ -11,6 +11,15 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/videos/portal.mp4',
+        destination: '/api/media/drive/10c_cA4sXLR36eE2JnFy6A9cidgDPSXPU',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
