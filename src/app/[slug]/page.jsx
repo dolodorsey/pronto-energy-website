@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
   const page = sitePages[slug];
   if (!page) return {};
   return {
-    title: `${page.title} — Pronto Energy`,
+    title: page.title,
     description: page.description,
     alternates: { canonical: `/${slug}` },
     openGraph: {
