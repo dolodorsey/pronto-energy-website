@@ -1,0 +1,92 @@
+/* Approved 2026 PRONTO mockup direction — loaded last. */
+body { background:#070a0d; }
+
+/* The real animated hero stays the home screen; this layer changes the composition, not the working motion. */
+section:has(source[src="/videos/portal.mp4"]) {
+  min-height:100svh !important;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+section:has(source[src="/videos/portal.mp4"])::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.90) 0%,rgba(0,0,0,.68) 39%,rgba(0,0,0,.10) 71%),
+    linear-gradient(180deg,rgba(0,0,0,.24),transparent 42%,rgba(0,0,0,.78));
+}
+section:has(source[src="/videos/portal.mp4"]) > div:last-child {
+  position:relative !important;
+  z-index:3 !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:160px clamp(28px,7vw,110px) 120px !important;
+}
+section:has(source[src="/videos/portal.mp4"]) > div:last-child > div {
+  width:min(900px,72vw);
+}
+section:has(source[src="/videos/portal.mp4"]) h1 {
+  max-width:8.5ch;
+  margin:0 !important;
+  font-size:0 !important;
+  line-height:.82 !important;
+  letter-spacing:-.015em !important;
+  text-shadow:0 14px 50px rgba(0,0,0,.45);
+}
+section:has(source[src="/videos/portal.mp4"]) h1 > span {
+  display:block !important;
+  font-size:0 !important;
+  background:none !important;
+  -webkit-text-fill-color:initial !important;
+}
+section:has(source[src="/videos/portal.mp4"]) h1 > span:first-child::after,
+section:has(source[src="/videos/portal.mp4"]) h1 > span:nth-child(2)::after {
+  display:block;
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:clamp(86px,14vw,220px);
+  font-weight:400;
+  line-height:.78;
+  letter-spacing:.015em;
+  -webkit-text-fill-color:currentColor;
+}
+section:has(source[src="/videos/portal.mp4"]) h1 > span:first-child::after {
+  content:"FUEL THE";
+  color:#f7f8fa;
+}
+section:has(source[src="/videos/portal.mp4"]) h1 > span:nth-child(2)::after {
+  content:"MOMENT.";
+  color:#ffdc22;
+  text-shadow:0 0 34px rgba(255,220,34,.14);
+}
+section:has(source[src="/videos/portal.mp4"]) h1 + div {
+  margin-left:0 !important;
+  max-width:560px !important;
+  padding-left:18px;
+  border-left:2px solid #5edcff;
+}
+section:has(source[src="/videos/portal.mp4"]) h1 + div p {
+  color:rgba(255,255,255,.72) !important;
+  font-size:clamp(15px,1.2vw,19px) !important;
+  line-height:1.65 !important;
+}
+section:has(source[src="/videos/portal.mp4"]) h1 + div a:first-of-type {
+  background:#ffdc22 !important;
+  color:#080b0e !important;
+}
+
+/* Push the rest of the existing strong site toward the denser approved mockup rhythm. */
+.elemental-grid,.products-grid,.retail-grid,.footer-grid { gap:4px !important; }
+section { border-bottom-color:rgba(255,255,255,.08); }
+
+@media(max-width:768px){
+  section:has(source[src="/videos/portal.mp4"]) > div:last-child { padding:130px 20px 90px !important; }
+  section:has(source[src="/videos/portal.mp4"]) > div:last-child > div { width:100%; }
+  section:has(source[src="/videos/portal.mp4"]) h1 > span:first-child::after,
+  section:has(source[src="/videos/portal.mp4"]) h1 > span:nth-child(2)::after { font-size:clamp(74px,24vw,120px); }
+  section:has(source[src="/videos/portal.mp4"]) h1 + div { margin-top:28px !important; }
+}
+
+@media(prefers-reduced-motion:reduce){
+  section:has(source[src="/videos/portal.mp4"]) video { animation:none !important; }
+}
