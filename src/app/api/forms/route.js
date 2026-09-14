@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 const BRAND_KEY = 'pronto';
 const BRAND_NAME = 'Pronto Energy';
 const ASSIGNED_TEAM = 'Pronto Energy Sales';
-const PRONTO_GHL_LOCATION_ID = 'P3Xk1DXrNRFozNsGQeJ8';
+const PRONTO_GHL_LOCATION_ID = 'ASE7kn1Ee87Oxb7VJSei';
 const UPSTREAM_TIMEOUT_MS = 5000;
 const ALLOWED_REQUEST_BRANDS = new Set(['pronto', 'pronto_energy']);
 const ALLOWED_FORM_TYPES = new Set([
