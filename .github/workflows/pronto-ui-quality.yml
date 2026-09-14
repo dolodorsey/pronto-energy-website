@@ -24,6 +24,15 @@ jobs:
             echo "BEVCO GHL location leaked into Pronto intake code"
             exit 1
           fi
+      - name: Remediate production dependency advisories
+        run: npm audit fix
+      - name: Export remediated lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: pronto-remediated-lockfile
+          path: package-lock.json
+          if-no-files-found: error
+          retention-days: 1
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run lint
       - run: npx tsc --noEmit
