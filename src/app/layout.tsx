@@ -5,6 +5,7 @@ import "./globals.css";
 import "./experience-layer.css";
 import "./commercial-seo.css";
 import "./mockup-overhaul.css";
+import "./motion-pass.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pronto-energy-website.vercel.app";
 
