@@ -17,6 +17,14 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - name: Verify Pronto CRM isolation contract
+        run: |
+          grep -q "PRONTO_GHL_LOCATION_ID = 'ASE7kn1Ee87Oxb7VJSei'" src/app/api/forms/route.js
+          if grep -q "P3Xk1DXrNRFozNsGQeJ8" src/app/api/forms/route.js; then
+            echo "BEVCO GHL location leaked into Pronto intake code"
+            exit 1
+          fi
+      - run: npm audit --omit=dev --audit-level=high
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run build
