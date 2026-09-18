@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ProntoExperienceLayer from "@/components/ProntoExperienceLayer";
 import ProntoCommercialDock from "@/components/ProntoCommercialDock";
+import InstallAppPrompt from "@/components/InstallAppPrompt";
 import "./globals.css";
 import "./experience-layer.css";
 import "./commercial-seo.css";
@@ -18,6 +19,9 @@ export const metadata: Metadata = {
   category: "Food & Beverage",
   creator: "Pronto Energy",
   publisher: "Pronto Energy",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, title: "Pronto Energy", statusBarStyle: "black-translucent" },
+  icons: { icon: [{ url:"/api/pwa-icon?size=192", sizes:"192x192", type:"image/png" }, { url:"/api/pwa-icon?size=512", sizes:"512x512", type:"image/png" }], apple:[{ url:"/api/pwa-icon?size=180", sizes:"180x180", type:"image/png" }] },
   alternates: { canonical: `${SITE_URL}/` },
   robots: { index:true, follow:true, googleBot:{ index:true, follow:true, "max-image-preview":"large", "max-snippet":-1, "max-video-preview":-1 } },
   openGraph: { title:"Pronto Energy — Six Flavors. Built For Momentum.", description:"Explore Pronto products, retail placement, distribution, events and commercial partnerships.", type:"website", url:`${SITE_URL}/`, siteName:"Pronto Energy", locale:"en_US", images:[{url:"/images/products/all-flavors-lineup.png",alt:"Pronto Energy flavor lineup"}] },
@@ -44,7 +48,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g,"\\u003c") }} />
-        <ProntoExperienceLayer/>{children}<ProntoCommercialDock/>
+        <ProntoExperienceLayer/><InstallAppPrompt/>{children}<ProntoCommercialDock/>
       </body>
     </html>
   );
